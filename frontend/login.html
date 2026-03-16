@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In – PonyParadise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --pink: #f472b6; --pink-lt: #fce7f3; --purple: #c084fc;
+      --yellow: #fde68a; --dark: #2d1b4e; --radius: 1.2rem;
+    }
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh; display: flex; flex-direction: column;
+      background: linear-gradient(135deg, #fff0fb 0%, #f0f4ff 50%, #fffbe6 100%);
+      color: var(--dark);
+    }
+
+    /* NAVBAR */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.8rem 2.5rem;
+      background: rgba(255,255,255,0.8); backdrop-filter: blur(14px);
+      border-bottom: 1.5px solid rgba(244,114,182,0.18);
+    }
+    .nav-logo {
+      font-family: 'Fredoka One', cursive; font-size: 1.4rem;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; font-weight: 700; font-size: .95rem; color: var(--dark); transition: color .2s; }
+    .nav-links a:hover { color: var(--pink); }
+    .nav-actions { display: flex; gap: .75rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .5rem 1.3rem; border-radius: 50px; font-weight: 700;
+      font-family: 'Nunito', sans-serif; font-size: .9rem;
+      cursor: pointer; border: none; transition: transform .15s, box-shadow .15s;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-outline { background: transparent; border: 2px solid var(--pink); color: var(--pink); }
+    .btn-outline:hover { background: var(--pink-lt); }
+    .btn-primary { background: linear-gradient(135deg, var(--pink), var(--purple)); color: #fff; }
+    .btn-primary:hover { box-shadow: 0 6px 20px rgba(244,114,182,.35); }
+
+    /* MAIN */
+    main {
+      flex: 1; display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 65px);
+    }
+
+    /* LEFT PANEL */
+    .left-panel {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #fce7f3 0%, #ede9fe 60%, #e0f2fe 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 3rem 2rem; text-align: center;
+    }
+    .left-panel .blob {
+      position: absolute; border-radius: 50%; filter: blur(50px);
+      animation: float 6s ease-in-out infinite;
+    }
+    .left-panel .blob-1 { width:300px;height:300px; background:rgba(244,114,182,.25); top:-60px;left:-60px; }
+    .left-panel .blob-2 { width:250px;height:250px; background:rgba(192,132,252,.2); bottom:-40px;right:-40px; animation-delay:3s; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-16px); }
+    }
+
+    .left-panel img {
+      width: min(300px, 80%);
+      filter: drop-shadow(0 12px 32px rgba(244,114,182,.3));
+      animation: float 5s ease-in-out infinite;
+      position: relative; z-index: 1;
+    }
+    .left-panel h2 {
+      font-family: 'Fredoka One', cursive; font-size: 1.8rem; margin-top: 1.5rem;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      position: relative; z-index: 1;
+    }
+    .left-panel p { color: #6b7280; margin-top: .5rem; font-weight: 600; position: relative; z-index: 1; }
+
+    /* RIGHT PANEL – FORM */
+    .right-panel {
+      display: flex; align-items: center; justify-content: center;
+      padding: 3rem 2rem;
+      background: rgba(255,255,255,0.6); backdrop-filter: blur(8px);
+    }
+
+    .form-card {
+      width: 100%; max-width: 420px;
+      background: white; border-radius: 2rem;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 8px 48px rgba(192,132,252,.15);
+      border: 1.5px solid rgba(244,114,182,.12);
+      animation: slideUp .5s ease both;
+    }
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .form-header { text-align: center; margin-bottom: 2rem; }
+    .form-header .form-logo {
+      font-size: 2.5rem; margin-bottom: .5rem;
+    }
+    .form-header h1 {
+      font-family: 'Fredoka One', cursive; font-size: 1.8rem;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .form-header p { color: #9ca3af; font-size: .9rem; margin-top: .3rem; }
+
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block; font-weight: 700; font-size: .9rem;
+      margin-bottom: .4rem; color: var(--dark);
+    }
+    .form-group input {
+      width: 100%; padding: .75rem 1rem;
+      border: 1.5px solid #e5e7eb; border-radius: var(--radius);
+      font-family: 'Nunito', sans-serif; font-size: .95rem;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .form-group input:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(244,114,182,.15);
+    }
+
+    .form-extras {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.5rem; font-size: .85rem;
+    }
+    .form-extras label { display: flex; align-items: center; gap: .4rem; font-weight: 600; cursor: pointer; }
+    .form-extras a { color: var(--pink); font-weight: 700; text-decoration: none; }
+    .form-extras a:hover { text-decoration: underline; }
+
+    .btn-submit {
+      width: 100%; padding: .85rem; border-radius: 50px; border: none;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: white; font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: 1rem; cursor: pointer;
+      transition: transform .15s, box-shadow .2s;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(244,114,182,.4); }
+    .btn-submit:active { transform: scale(.98); }
+
+    .form-footer { text-align: center; margin-top: 1.5rem; font-size: .88rem; color: #6b7280; }
+    .form-footer a { color: var(--pink); font-weight: 700; text-decoration: none; }
+    .form-footer a:hover { text-decoration: underline; }
+
+    .divider { display: flex; align-items: center; gap: .8rem; margin: 1.5rem 0; }
+    .divider::before, .divider::after { content:''; flex:1; height:1px; background:#e5e7eb; }
+    .divider span { font-size: .8rem; color: #9ca3af; font-weight: 600; white-space: nowrap; }
+
+    .alert { padding: .75rem 1rem; border-radius: var(--radius); font-size: .88rem; font-weight: 700; margin-bottom: 1rem; display: none; }
+    .alert-error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .alert-success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+
+    @media (max-width: 768px) {
+      main { grid-template-columns: 1fr; }
+      .left-panel { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">🌈 PonyParadise</a>
+  <ul class="nav-links">
+    <li><a href="shop.html">Products</a></li>
+    <li><a href="#">Cart 🛒</a></li>
+    <li><a href="#">Wishlist 💖</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-outline">Sign in</a>
+    <a href="register.html" class="btn btn-primary">Register</a>
+  </div>
+</nav>
+
+<main>
+  <!-- LEFT: Illustration -->
+  <div class="left-panel">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <img src="ponylogin.png" alt="Pony"
+         onerror="this.src='https://placehold.co/300x280/fce7f3/c084fc?text=🌈'"/>
+    <h2>Welcome Back! 🌟</h2>
+    <p>Sign in to your PonyParadise account<br/>and continue your magical journey</p>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="right-panel">
+    <div class="form-card">
+      <div class="form-header">
+        <div class="form-logo">🌈</div>
+        <h1>Sign In</h1>
+        <p>Enter your credentials to continue</p>
+      </div>
+
+      <div class="alert alert-error" id="errorMsg"></div>
+      <div class="alert alert-success" id="successMsg"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="your@email.com" required/>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" required/>
+        </div>
+        <div class="form-extras">
+          <label><input type="checkbox"/> Remember me</label>
+          <a href="#">Forgot your password?</a>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">Sign In ✨</button>
+      </form>
+
+      <div class="divider"><span>or</span></div>
+
+      <div class="form-footer">
+        Don't have an account? <a href="register.html">Register now →</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const form = document.getElementById('loginForm');
+  const errorMsg = document.getElementById('errorMsg');
+  const successMsg = document.getElementById('successMsg');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorMsg.style.display = 'none';
+    successMsg.style.display = 'none';
+    submitBtn.textContent = 'Signing in...';
+    submitBtn.disabled = true;
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+      const res = await fetch('http://localhost:3000/customer/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        successMsg.textContent = `Welcome back, ${data.username}! 🎉 Redirecting...`;
+        successMsg.style.display = 'block';
+        localStorage.setItem('customer', JSON.stringify(data));
+        setTimeout(() => window.location.href = 'index.html', 1500);
+      } else {
+        errorMsg.textContent = data.message || 'Invalid email or password';
+        errorMsg.style.display = 'block';
+      }
+    } catch {
+      errorMsg.textContent = 'Cannot connect to server. Please try again.';
+      errorMsg.style.display = 'block';
+    }
+
+    submitBtn.textContent = 'Sign In ✨';
+    submitBtn.disabled = false;
+  });
+</script>
+</body>
+</html>
