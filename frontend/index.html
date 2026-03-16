@@ -416,14 +416,14 @@
 <script>
   // Pony data (matches DB)
   const ponies = [
-    { name:'Princess Celestia', type:'Alicorn', rarity:'A', price:5999, img:'images/ponyceles.png' },
-    { name:'Princess Luna',     type:'Alicorn', rarity:'A', price:5999, img:'images/ponyluna.png' },
-    { name:'Applejack',         type:'Earth Pony', rarity:'B', price:1499, img:'images/ponyapplejack.png' },
-    { name:'Fluttershy',        type:'Pegasus', rarity:'B', price:1499, img:'images/ponyflutter.jpg' },
-    { name:'Rarity',            type:'Unicorn', rarity:'B', price:1499, img:'images/ponyrarity.png' },
-    { name:'Pinkie Pie',        type:'Earth Pony', rarity:'B', price:1499, img:'images/ponypinkypie.png' },
-    { name:'Twilight Sparkle',  type:'Alicorn', rarity:'A', price:1499, img:'images/ponytwi.webp' },
-    { name:'Rainbow Dash',      type:'Pegasus', rarity:'B', price:1499, img:'images/ponyRainbowDash.png' },
+    { name:'Princess Celestia', type:'Alicorn', rarity:'A', price:5999, img:'images/ponyceles.png',href:'shop.html?pony=celestia' },
+    { name:'Princess Luna',     type:'Alicorn', rarity:'A', price:5999, img:'images/ponyluna.png',href:'shop.html?pony=luna' },
+    { name:'Applejack',         type:'Earth Pony', rarity:'B', price:1499, img:'images/ponyapplejack.png',href:'shop.html?pony=applejack' },
+    { name:'Fluttershy',        type:'Pegasus', rarity:'B', price:1499, img:'images/ponyflutter.jpg',href:'shop.html?pony=fluttershy' },
+    { name:'Rarity',            type:'Unicorn', rarity:'B', price:1499, img:'images/ponyrarity.png',href:'shop.html?pony=rarity' },
+    { name:'Pinkie Pie',        type:'Earth Pony', rarity:'B', price:1499, img:'images/ponypinkypie.png',href:'shop.html?pony=pinkie' },
+    { name:'Twilight Sparkle',  type:'Alicorn', rarity:'A', price:1499, img:'images/ponytwi.webp',href:'shop.html?pony=twilight' },
+    { name:'Rainbow Dash',      type:'Pegasus', rarity:'B', price:1499, img:'images/ponyRainbowDash.png',href:'shop.html?pony=rainbow' },
   ];
 
   const rarityClass = { A:'rarity-a', B:'rarity-b', C:'rarity-c' };
@@ -433,6 +433,7 @@
   ponies.forEach((p, i) => {
     const card = document.createElement('div');
     card.className = 'pony-card reveal';
+    card.style.cursor = 'pointer';
     card.innerHTML = `
       <div class="pony-img-wrap">
         <img src="${p.img}" alt="${p.name}"
@@ -448,6 +449,13 @@
           <button class="cart-btn" title="Add to cart">🛒</button>
         </div>
       </div>`;
+    
+    card.addEventListener('click', (e) => {
+      if (!e.target.closest('.wishlist-btn') && !e.target.closest('.cart-btn')) {
+        window.location.href = p.href;
+      }
+    });
+    
     grid.appendChild(card);
   });
 
