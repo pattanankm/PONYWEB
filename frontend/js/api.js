@@ -1,8 +1,8 @@
 const API = "http://localhost:3000"
 
-async function getPonies() {
-  const res = await fetch(API + "/ponies")
-  return res.json()
+export async function getPonies() {
+  const res = await fetch("http://localhost:3000/ponies");
+  return await res.json();
 }
 
 async function login(email,password){
