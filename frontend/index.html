@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PonyParadise – A Paradise for Pony Lovers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:    #f472b6;
+      --pink-lt: #fce7f3;
+      --purple:  #c084fc;
+      --yellow:  #fde68a;
+      --sky:     #bae6fd;
+      --mint:    #bbf7d0;
+      --white:   #ffffff;
+      --dark:    #2d1b4e;
+      --radius:  1.2rem;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #fff0fb 0%, #f0f4ff 50%, #fffbe6 100%);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ─────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.8rem 2.5rem;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(14px);
+      border-bottom: 1.5px solid rgba(244,114,182,0.18);
+      box-shadow: 0 2px 24px rgba(192,132,252,0.08);
+    }
+
+    .nav-logo img { height: 44px; }
+    .nav-logo span {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-left: 0.4rem; vertical-align: middle;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-weight: 700; font-size: 0.95rem;
+      color: var(--dark); transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--pink); }
+
+    .nav-actions { display: flex; gap: 0.75rem; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1.3rem; border-radius: 50px; font-weight: 700;
+      font-family: 'Nunito', sans-serif; font-size: 0.9rem;
+      cursor: pointer; border: none; transition: transform .15s, box-shadow .15s;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,114,182,.3); }
+
+    .btn-outline {
+      background: transparent; border: 2px solid var(--pink); color: var(--pink);
+    }
+    .btn-outline:hover { background: var(--pink-lt); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: #fff;
+    }
+
+    /* ── HERO ───────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 3rem;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 30%, rgba(252,231,243,.9) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(186,230,253,.5) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 10% 70%, rgba(187,247,208,.45) 0%, transparent 60%);
+    }
+
+    /* floating blobs */
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(40px);
+      animation: float 6s ease-in-out infinite;
+    }
+    .blob-1 { width:320px; height:320px; background:rgba(244,114,182,.25); top:-80px; left:-80px; animation-delay:0s; }
+    .blob-2 { width:260px; height:260px; background:rgba(192,132,252,.2); top:60%; right:-60px; animation-delay:2s; }
+    .blob-3 { width:200px; height:200px; background:rgba(253,230,138,.35); bottom:40px; left:30%; animation-delay:4s; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-20px) scale(1.04); }
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--yellow), #fbbf24);
+      color: #92400e; font-weight: 800; font-size: 0.8rem;
+      padding: 0.3rem 1rem; border-radius: 50px; margin-bottom: 1.2rem;
+      letter-spacing: .05em; text-transform: uppercase;
+      box-shadow: 0 2px 12px rgba(251,191,36,.4);
+      animation: popIn .5s ease both;
+    }
+
+    .hero-logo {
+      width: min(380px, 80vw);
+      margin-bottom: 1rem;
+      animation: popIn .6s .1s ease both;
+      filter: drop-shadow(0 8px 24px rgba(244,114,182,.3));
+    }
+
+    .hero-tagline {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      letter-spacing: .25em; text-transform: uppercase;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+      animation: popIn .6s .2s ease both;
+    }
+
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      animation: popIn .6s .35s ease both; }
+
+    .hero-img-wrap {
+      position: relative; z-index: 1; margin-top: 2.5rem;
+      animation: riseUp .8s .4s ease both;
+    }
+    .hero-img-wrap img {
+      width: min(680px, 90vw);
+      border-radius: 2rem;
+      box-shadow: 0 24px 80px rgba(192,132,252,.25), 0 4px 16px rgba(244,114,182,.15);
+    }
+    /* sparkle dots around hero image */
+    .sparkle {
+      position: absolute; border-radius: 50%;
+      background: var(--yellow);
+      animation: sparkle 2s ease-in-out infinite;
+    }
+    .sparkle:nth-child(1) { width:14px;height:14px; top:-10px; left:15%; animation-delay:0s; }
+    .sparkle:nth-child(2) { width:10px;height:10px; top:20%; right:-8px; animation-delay:.5s; }
+    .sparkle:nth-child(3) { width:12px;height:12px; bottom:-8px; right:20%; animation-delay:1s; }
+    .sparkle:nth-child(4) { width:8px;height:8px; bottom:30%; left:-6px; animation-delay:1.5s; background:var(--pink); }
+
+    @keyframes sparkle {
+      0%,100% { transform: scale(1); opacity:.8; }
+      50%      { transform: scale(1.6); opacity:1; }
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(.85) translateY(10px); }
+      to   { opacity:1; transform:scale(1) translateY(0); }
+    }
+    @keyframes riseUp {
+      from { opacity:0; transform: translateY(40px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ── SECTION TITLE ──────────────────────── */
+    .section { padding: 5rem 2rem; }
+    .section-title {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .section-title h2 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .section-title p { color: #6b7280; margin-top: .5rem; font-size: 1rem; font-weight: 600; }
+
+    /* divider wave */
+    .wave-divider { line-height: 0; }
+    .wave-divider svg { display: block; width: 100%; }
+
+    /* ── FEATURE CARDS ──────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem; max-width: 900px; margin: 0 auto;
+    }
+    .feature-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(192,132,252,.1);
+      border: 1.5px solid rgba(244,114,182,.12);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(244,114,182,.2); }
+    .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .feature-card h3 { font-family: 'Fredoka One', cursive; font-size: 1.2rem; color: var(--dark); margin-bottom: .5rem; }
+    .feature-card p { color: #6b7280; font-size: .9rem; line-height: 1.6; }
+
+    /* ── PONY CARDS ─────────────────────────── */
+    .ponies-section { background: rgba(255,255,255,0.6); }
+    .ponies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem; max-width: 1000px; margin: 0 auto;
+    }
+    .pony-card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(192,132,252,.12);
+      border: 1.5px solid rgba(244,114,182,.1);
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+    }
+    .pony-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 16px 40px rgba(244,114,182,.25); }
+    .pony-img-wrap {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #fce7f3, #ede9fe);
+      padding: 1rem; height: 180px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pony-img-wrap img { width: 100%; height: 100%; object-fit: contain; transition: transform .3s; }
+    .pony-card:hover .pony-img-wrap img { transform: scale(1.08); }
+
+    .pony-rarity {
+      position: absolute; top: 8px; right: 8px;
+      font-size: .7rem; font-weight: 800; padding: .2rem .6rem;
+      border-radius: 50px; letter-spacing: .04em;
+    }
+    .rarity-a { background: #fde68a; color: #92400e; }
+    .rarity-b { background: #bae6fd; color: #0c4a6e; }
+    .rarity-c { background: #d1fae5; color: #065f46; }
+
+    .wishlist-btn {
+      position: absolute; top: 8px; left: 8px;
+      background: white; border: none; border-radius: 50%;
+      width: 30px; height: 30px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,.1);
+      transition: transform .15s;
+    }
+    .wishlist-btn:hover { transform: scale(1.2); }
+    .wishlist-btn.active { color: var(--pink); }
+
+    .pony-info { padding: 1rem; }
+    .pony-info h4 { font-weight: 800; font-size: .95rem; margin-bottom: .3rem; }
+    .pony-type { font-size: .78rem; color: #9ca3af; margin-bottom: .6rem; }
+    .pony-bottom { display: flex; align-items: center; justify-content: space-between; }
+    .pony-price { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--pink); }
+    .cart-btn {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      border: none; color: white; border-radius: 50%;
+      width: 32px; height: 32px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; transition: transform .15s, box-shadow .15s;
+    }
+    .cart-btn:hover { transform: scale(1.15); box-shadow: 0 4px 14px rgba(244,114,182,.4); }
+
+    /* ── CTA BANNER ─────────────────────────── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: white; text-align: center;
+      padding: 5rem 2rem; border-radius: 2rem;
+      margin: 0 2rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '🌈'; font-size: 8rem;
+      position: absolute; opacity: .1;
+      top: -20px; left: -20px;
+    }
+    .cta-section h2 { font-family: 'Fredoka One', cursive; font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 1rem; }
+    .cta-section p { font-size: 1.05rem; opacity: .9; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .btn-white {
+      background: white;
+      color: var(--pink);
+      font-weight: 800;
+    }
+    .btn-white:hover { box-shadow: 0 6px 20px rgba(255,255,255,.4); }
+
+    /* ── FOOTER ─────────────────────────────── */
+    footer {
+      background: var(--dark); color: rgba(255,255,255,.7);
+      text-align: center; padding: 2rem;
+      font-size: .9rem;
+    }
+    footer span { color: var(--pink); }
+
+    /* ── SCROLL REVEAL ──────────────────────── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">
+    <span>🌈 PonyParadise</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">Products</a></li>
+    <li><a href="#">Cart 🛒</a></li>
+    <li><a href="#">Wishlist 💖</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-outline">Sign in</a>
+    <a href="register.html" class="btn btn-primary">Register</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">✨ A Paradise for Pony Lovers ✨</div>
+    <img src="ponyregislogo.png" alt="PonyParadise" class="hero-logo"
+         onerror="this.style.display='none'; document.querySelector('.hero-title').style.display='block'"/>
+    <h1 class="hero-title" style="display:none; font-family:'Fredoka One',cursive; font-size:clamp(3rem,8vw,5rem); background:linear-gradient(90deg,var(--pink),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">PonyParadise</h1>
+    <p class="hero-tagline">✦ A Paradise for Pony Lovers ✦</p>
+    <div class="hero-cta">
+      <a href="shop.html" class="btn btn-primary">🛍 Shop Now</a>
+      <a href="#featured" class="btn btn-outline">Explore Ponies ↓</a>
+    </div>
+  </div>
+  <div class="hero-img-wrap">
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <img src="ponyhome.png.jpg" alt="Ponies"
+         onerror="this.src='https://placehold.co/680x380/fce7f3/c084fc?text=PonyParadise+🌈'"/>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="rgba(255,255,255,0.6)"/>
+  </svg>
+</div>
+
+<!-- FEATURES -->
+<section class="section">
+  <div class="section-title reveal">
+    <h2>Why PonyParadise? 🌟</h2>
+    <p>Everything a pony lover needs in one magical place</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon">🦄</div>
+      <h3>Rare Ponies</h3>
+      <p>Discover rare Rarity-A ponies you won't find anywhere else</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">💖</div>
+      <h3>Wishlist</h3>
+      <p>Save your favourite ponies and never miss a collection</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">⭐</div>
+      <h3>Reviews</h3>
+      <p>Read honest reviews from fellow pony lovers</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🚀</div>
+      <h3>Fast Shipping</h3>
+      <p>Delivered within 2 working days straight to your door</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PONIES -->
+<section class="section ponies-section" id="featured">
+  <div class="section-title reveal">
+    <h2>Featured Ponies 🐴</h2>
+    <p>Our most beloved collection — pick your favourite!</p>
+  </div>
+  <div class="ponies-grid" id="ponyGrid"></div>
+  <div style="text-align:center; margin-top:2.5rem;" class="reveal">
+    <a href="shop.html" class="btn btn-primary">View All Ponies →</a>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section reveal">
+  <h2>Ready to Start Your Pony Journey? 🌈</h2>
+  <p>Join thousands of pony lovers — register today and get access to exclusive collections!</p>
+  <a href="register.html" class="btn btn-white">Create Your Account ✨</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Made with <span>💖</span> by Group 2 · PonyParadise © 2026</p>
+</footer>
+
+<script>
+  // Pony data (matches DB)
+  const ponies = [
+    { name:'Princess Celestia', type:'Alicorn', rarity:'A', price:5999, img:'ponyceles.png' },
+    { name:'Princess Luna',     type:'Alicorn', rarity:'A', price:5999, img:'ponyluna.png' },
+    { name:'Applejack',         type:'Earth Pony', rarity:'B', price:1499, img:'ponyapplejack.png' },
+    { name:'Fluttershy',        type:'Pegasus', rarity:'B', price:1499, img:'ponyflutter.jpg' },
+    { name:'Rarity',            type:'Unicorn', rarity:'B', price:1499, img:'ponyrarity.png' },
+    { name:'Pinkie Pie',        type:'Earth Pony', rarity:'B', price:1499, img:'ponypinkypie.png' },
+    { name:'Twilight Sparkle',  type:'Alicorn', rarity:'A', price:1499, img:'ponytwi.webp' },
+    { name:'Rainbow Dash',      type:'Pegasus', rarity:'B', price:1499, img:'ponyRainbowDash.png' },
+  ];
+
+  const rarityClass = { A:'rarity-a', B:'rarity-b', C:'rarity-c' };
+  const grid = document.getElementById('ponyGrid');
+  const wishlist = new Set();
+
+  ponies.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'pony-card reveal';
+    card.innerHTML = `
+      <div class="pony-img-wrap">
+        <img src="${p.img}" alt="${p.name}"
+             onerror="this.src='https://placehold.co/200x180/fce7f3/c084fc?text=🐴'"/>
+        <span class="pony-rarity ${rarityClass[p.rarity]}">${p.rarity}</span>
+        <button class="wishlist-btn" data-i="${i}" title="Wishlist">🤍</button>
+      </div>
+      <div class="pony-info">
+        <h4>${p.name}</h4>
+        <p class="pony-type">${p.type}</p>
+        <div class="pony-bottom">
+          <span class="pony-price">${p.price.toLocaleString()} ฿</span>
+          <button class="cart-btn" title="Add to cart">🛒</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  // Wishlist toggle
+  document.querySelectorAll('.wishlist-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const i = btn.dataset.i;
+      if (wishlist.has(i)) { wishlist.delete(i); btn.textContent = '🤍'; btn.classList.remove('active'); }
+      else                  { wishlist.add(i);    btn.textContent = '💖'; btn.classList.add('active'); }
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
