@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Checkout - PonyParadise</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+body{font-family:'Nunito',sans-serif;background:#fff0fb;padding:40px;max-width:900px;margin:0 auto;}
+h1{font-family:'Fredoka One';color:#f472b6;margin-bottom:20px;}
+section{background:white;padding:20px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.08);margin-bottom:20px;}
+label{display:block;margin:12px 0 6px;font-weight:600;}
+input, select, textarea{width:100%;padding:10px;border:1px solid #e8d7f0;border-radius:9px;font-size:14px;}
+#order-summary .item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0e6f8;}
+#order-summary .item:last-child{border-bottom:none;}
+.total{margin-top:14px;font-size:20px;font-weight:700;color:#7a22cb;}
+button{background:#f472b6;border:none;color:white;padding:12px 16px;border-radius:10px;cursor:pointer;font-size:16px;margin-top:14px;}
+button:disabled{opacity:.6;cursor:not-allowed;}
+.small-text{font-size:14px;color:#444;margin-top:12px;}
+</style>
+</head>
+<body>
+<h1>Checkout</h1>
+<section id="cart-section">
+<h2>Order Summary</h2>
+<div id="order-summary"></div>
+<div class="total">Total: <span id="total-price">0</span> ฿</div>
+</section>
+<section>
+<h2>Shipping & Payment</h2>
+<form id="checkout-form">
+<label for="name">Full name</label>
+<input id="name" name="name" type="text" required placeholder="Your name" />
+
+<label for="email">Email</label>
+<input id="email" name="email" type="email" required placeholder="you@example.com" />
+
+<label for="phone">Phone</label>
+<input id="phone" name="phone" type="tel" required placeholder="0812345678" />
+
+<label for="address">Shipping address</label>
+<textarea id="address" name="address" rows="3" required placeholder="Street, district, province"></textarea>
+
+<label for="paymethod">Payment method</label>
+<select id="paymethod" name="paymethod" required>
+<option value="">Choose payment</option>
+<option value="cod">Cash on delivery</option>
+<option value="bank">Bank transfer</option>
+<option value="credit">Credit card</option>
+</select>
+
+<button type="submit" id="place-order-btn">Place order</button>
+<p class="small-text">Important: This demo stores orders in local storage and empties cart after placement.</p>
+</form>
+</section>
+
+<script>
+const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+const orderSummary = document.getElementById('order-summary');
+const totalPrice = document.getElementById('total-price');
+const cartSection = document.getElementById('cart-section');
+const form = document.getElementById('checkout-form');
+const placeBtn = document.getElementById('place-order-btn');
+
+function renderSummary(){
+ if (!cart.length){
+ cartSection.innerHTML = '<p>Your cart is empty. <a href="shop.html">Go back to shop</a>.</p>';
+ placeBtn.disabled = true;
+ return;
+ }
+ let total=0;
+ orderSummary.innerHTML = '';
+ cart.forEach(item=>{
+ const row=document.createElement('div'); row.className='item';
+ row.innerHTML=`<span>${item.name}</span><span>${Number(item.price).toLocaleString()} ฿</span>`;
+ orderSummary.appendChild(row);
+ total += Number(item.price);
+ });
+ totalPrice.innerText = total.toLocaleString();
+ placeBtn.disabled = false;
+}
+
+form.addEventListener('submit', event=>{
+ event.preventDefault();
+ if (!cart.length){
+ alert('Your cart is empty.');
+ return;
+ }
+ const order = {
+ id: 'ORD-' + Date.now(),
+ createdAt: new Date().toISOString(),
+ customer: {
+ name: form.name.value.trim(),
+ email: form.email.value.trim(),
+ phone: form.phone.value.trim(),
+ address: form.address.value.trim(),
+ method: form.paymethod.value
+ },
+ items: cart,
+ total: Number(totalPrice.textContent.replace(/,/g, ''))
+ };
+ const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+ orders.push(order);
+ localStorage.setItem('orders', JSON.stringify(orders));
+ localStorage.setItem('cart', JSON.stringify([]));
+ alert('Order placed! ID: ' + order.id);
+ window.location.href = 'index.html';
+});
+
+renderSummary();
+</script>
+</body>
+</html>
