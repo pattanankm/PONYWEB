@@ -1,5 +1,8 @@
 import { getPonies } from "./api.js";
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+const saveWishlist = () => localStorage.setItem("wishlist", JSON.stringify(wishlist));
 
 // Map pony names to URL parameters
 const nameToId = {
@@ -28,60 +31,99 @@ const ponyInfo = {
 const rarityClass = { A: 'rarity-a', B: 'rarity-b', C: 'rarity-c' };
 
 async function loadPonies(){
-  const ponies = await getPonies();
-  const list = document.getElementById("pony-list");
-
-  ponies.forEach(p => {
-    const card = document.createElement("div");
-    card.className = 'pony-card';
+  try {
+    console.log('Loading ponies from API...');
+    const ponies = await getPonies();
+    console.log('Ponies loaded:', ponies);
     
-    const info = ponyInfo[p.name] || { type: 'Unknown', rarity: 'C' };
-    const ponyId = nameToId[p.name] || 'unknown';
-    
-    card.innerHTML = `
-  <div class="pony-img-wrap">
-    <img src="https://placehold.co/200x180/fce7f3/c084fc?text=🐴"
-         alt="${p.name}"
-         onerror="this.src='https://placehold.co/200x180/fce7f3/c084fc?text=🐴'"/>
-    <span class="pony-rarity ${rarityClass[info.rarity]}">${info.rarity}</span>
-    <button class="wishlist-btn" title="Wishlist">🤍</button>
-  </div>
-  <div class="pony-info">
-    <h4>${p.name}</h4>
-    <p class="pony-type">${info.type}</p>
-    <div class="pony-bottom">
-      <span class="pony-price">${Number(p.price).toLocaleString()} ฿</span>
-      <button class="cart-btn" title="Add to cart">🛒</button>
-    </div>
-  </div>
-`;
-    
-    // Make card clickable to go to detail page
-    card.addEventListener('click', (e) => {
-      if (!e.target.closest('.wishlist-btn') && !e.target.closest('.cart-btn')) {
-      window.location.href = `detail.html?pony=${ponyId}`;
+    if (!ponies || ponies.length === 0) {
+      console.warn('No ponies returned from API');
+      document.getElementById("pony-list").innerHTML = '<p style="text-align:center; padding: 40px; color: #888;">No ponies available. Check if backend is running on port 3000.</p>';
+      return;
     }
-  });
 
-  const cartBtn = card.querySelector(".cart-btn");
+    const list = document.getElementById("pony-list");
 
-    cartBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
+    ponies.forEach(p => {
+      const card = document.createElement("div");
+      card.className = 'pony-card';
+      
+      const info = ponyInfo[p.name] || { type: 'Unknown', rarity: 'C' };
+      const ponyId = nameToId[p.name] || 'unknown';
+      
+      card.innerHTML = `
+    <div class="pony-img-wrap">
+      <img src="https://placehold.co/200x180/fce7f3/c084fc?text=🐴"
+           alt="${p.name}"
+           onerror="this.src='https://placehold.co/200x180/fce7f3/c084fc?text=🐴'"/>
+      <span class="pony-rarity ${rarityClass[info.rarity]}">${info.rarity}</span>
+      <button class="wishlist-btn" title="Wishlist">🤍</button>
+    </div>
+    <div class="pony-info">
+      <h4>${p.name}</h4>
+      <p class="pony-type">${info.type}</p>
+      <div class="pony-bottom">
+        <span class="pony-price">${Number(p.price).toLocaleString()} ฿</span>
+        <button class="cart-btn" title="Add to cart">🛒</button>
+      </div>
+    </div>
+  `;
 
-    cart.push({
-    pony_id: p.pony_id,
-    name: p.name,
-    price: p.price,
-    qty: 1
+      const wishlistBtn = card.querySelector('.wishlist-btn');
+      const isWishlisted = () => wishlist.some((item) => item.pony_id === p.pony_id);
+      const refreshWishlistButton = () => {
+        wishlistBtn.textContent = isWishlisted() ? '❤️' : '🤍';
+      };
+      refreshWishlistButton();
+
+      wishlistBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        if (isWishlisted()) {
+          wishlist = wishlist.filter((item) => item.pony_id !== p.pony_id);
+          alert(`${p.name} removed from wishlist`);
+        } else {
+          wishlist.push({
+            pony_id: p.pony_id,
+            name: p.name,
+            price: p.price
+          });
+          alert(`${p.name} added to wishlist`);
+        }
+
+        saveWishlist();
+        refreshWishlistButton();
+      });
+
+      // Make card clickable to go to detail page
+      card.addEventListener('click', (e) => {
+        if (!e.target.closest('.wishlist-btn') && !e.target.closest('.cart-btn')) {
+          window.location.href = `detail.html?pony=${ponyId}`;
+        }
+      });
+
+      const cartBtn = card.querySelector(".cart-btn");
+
+      cartBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        cart.push({
+          pony_id: p.pony_id,
+          name: p.name,
+          price: p.price,
+          qty: 1
+        });
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert(p.name + " added to cart!");
+      });
+
+      list.appendChild(card);
     });
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-
-   alert(p.name + " added to cart!");
-  });
-
-  list.appendChild(card);
-  });
+  } catch (error) {
+    console.error('Error loading ponies:', error);
+    document.getElementById("pony-list").innerHTML = '<p style="text-align:center; padding: 40px; color: red;">Error loading ponies: ' + error.message + '</p>';
+  }
 }
 
 loadPonies();

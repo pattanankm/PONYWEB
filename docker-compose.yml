@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./pony-backend
+    container_name: pony-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: 172.17.0.1
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_NAME: pony_shop
