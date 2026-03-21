@@ -13,7 +13,23 @@ const nameToId = {
   'Rarity': 'rarity',
   'Pinkie Pie': 'pinkie',
   'Twilight Sparkle': 'twilight',
-  'Rainbow Dash': 'rainbow'
+  'Rainbow Dash': 'rainbow',
+  'Wensley': 'wensley',
+  'Princess Cadance': 'cadance'
+};
+
+// Map pony names to image files
+const ponyImages = {
+  'Princess Celestia': 'images/ponyceles.png',
+  'Princess Luna': 'images/ponyluna.png',
+  'Applejack': 'images/ponyapplejack.png',
+  'Fluttershy': 'images/ponyflutter.jpg',
+  'Rarity': 'images/ponyrarity.png',
+  'Pinkie Pie': 'images/ponypinkypie.png',
+  'Twilight Sparkle': 'images/ponytwi.webp',
+  'Rainbow Dash': 'images/ponyRainbowDash.png',
+  'Wensley': 'images/ponyWensley.webp',
+  'Princess Cadance': 'images/ponycadence.webp'
 };
 
 // Pony types and rarity info
@@ -25,7 +41,9 @@ const ponyInfo = {
   'Rarity': { type: 'Unicorn', rarity: 'B' },
   'Pinkie Pie': { type: 'Earth Pony', rarity: 'B' },
   'Twilight Sparkle': { type: 'Alicorn', rarity: 'A' },
-  'Rainbow Dash': { type: 'Pegasus', rarity: 'B' }
+  'Rainbow Dash': { type: 'Pegasus', rarity: 'B' },
+  'Wensley': { type: 'Earth Pony', rarity: 'C' },
+  'Princess Cadance': { type: 'Pegasus', rarity: 'A' }
 };
 
 const rarityClass = { A: 'rarity-a', B: 'rarity-b', C: 'rarity-c' };
@@ -53,7 +71,7 @@ async function loadPonies(){
       
       card.innerHTML = `
     <div class="pony-img-wrap">
-      <img src="https://placehold.co/200x180/fce7f3/c084fc?text=🐴"
+      <img src="${ponyImages[p.name] || 'https://placehold.co/200x180/fce7f3/c084fc?text=🐴'}"
            alt="${p.name}"
            onerror="this.src='https://placehold.co/200x180/fce7f3/c084fc?text=🐴'"/>
       <span class="pony-rarity ${rarityClass[info.rarity]}">${info.rarity}</span>

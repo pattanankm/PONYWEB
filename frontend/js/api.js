@@ -1,7 +1,7 @@
-const API = "http://localhost:3000"
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? "http://localhost:3000" : "https://sporty-warmly-shark.ngrok-free.dev"
 
 export async function getPonies() {
-  const res = await fetch("http://localhost:3000/ponies");
+  const res = await fetch(API + "/ponies");
   return await res.json();
 }
 
