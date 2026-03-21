@@ -43,7 +43,7 @@ const ponyInfo = {
   'Twilight Sparkle': { type: 'Alicorn', rarity: 'A' },
   'Rainbow Dash': { type: 'Pegasus', rarity: 'B' },
   'Wensley': { type: 'Earth Pony', rarity: 'C' },
-  'Princess Cadance': { type: 'Pegasus', rarity: 'A' }
+  'Princess Cadance': { type: 'Alicorn', rarity: 'A' }
 };
 
 const rarityClass = { A: 'rarity-a', B: 'rarity-b', C: 'rarity-c' };
@@ -142,6 +142,9 @@ async function loadPonies(){
     console.error('Error loading ponies:', error);
     document.getElementById("pony-list").innerHTML = '<p style="text-align:center; padding: 40px; color: red;">Error loading ponies: ' + error.message + '</p>';
   }
+
+  // หาส่วนที่ push item เข้า cart แล้วเพิ่ม id
+
 }
 
 loadPonies();

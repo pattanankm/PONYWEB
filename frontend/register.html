@@ -47,19 +47,27 @@
     .btn-primary:hover { box-shadow: 0 6px 20px rgba(244,114,182,.35); }
 
     main {
-      flex: 1; display: grid;
+       flex: 1; display: grid;
       grid-template-columns: 1fr 1fr;
       min-height: calc(100vh - 65px);
+  
+      background-image: url('images/ponylogin.png');
+      background-size: cover;
+      background-position: center;
     }
 
     /* LEFT */
     .left-panel {
       position: relative; overflow: hidden;
-      background: linear-gradient(135deg, #ede9fe 0%, #fce7f3 60%, #e0f2fe 100%);
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       padding: 3rem 2rem; text-align: center;
+      background: rgba(237,233,254,0.45);
     }
+
+  
+
+
     .blob {
       position: absolute; border-radius: 50%; filter: blur(50px);
       animation: float 6s ease-in-out infinite;
@@ -88,7 +96,9 @@
     /* RIGHT */
     .right-panel {
       display: flex; align-items: center; justify-content: center;
-      padding: 2rem; background: rgba(255,255,255,0.6); backdrop-filter: blur(8px);
+      padding: 2rem;
+      background: rgba(237,233,254,0.45);/* ← โปร่งใสเล็กน้อย */
+      
     }
     .form-card {
       width: 100%; max-width: 440px;
@@ -180,7 +190,7 @@
   <div class="left-panel">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
-    <img src="ponyregislogo.png" alt="Register Pony"
+    <img src="images/PonyRegistLogoRe.PNG" alt="Register Pony"
          onerror="this.src='https://placehold.co/320x300/ede9fe/c084fc?text=🌈'"/>
     <h2>Join PonyParadise! ✨</h2>
     <p>Create your account and start<br/>your magical pony collection today</p>
