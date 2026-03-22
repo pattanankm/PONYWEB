@@ -16,7 +16,7 @@
   - Current Status: Live with review system, cart, wishlist
 
 - **Audience:** Stakeholders, team members
-- **Objectives:** Present database architecture and implementation details
+- **Objectives:** Present database architecture and implementation details //
 
 ---
 
