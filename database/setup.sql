@@ -59,13 +59,18 @@ INSERT INTO pony_type(type_name,special_ability)
 VALUES
 ('Unicorn','Magic'),
 ('Pegasus','Flying'),
-('Earth Pony','Strength');
+('Earth Pony','Strength'),
+('Alicorn','Ultimate Magic');
 
 INSERT INTO pony(name,price,rarity,type_id)
 VALUES
-('Princess Celestia',5999,'A',1),
-('Princess Luna',5999,'A',1),
+('Princess Celestia',5999,'A',4),
+('Princess Luna',5999,'A',4),
 ('Applejack',1499,'B',3),
 ('Fluttershy',1499,'B',2),
+('Rarity',1999,'B',1),
+('Pinkie Pie',1499,'B',3),
+('Twilight Sparkle',5999,'A',4),
 ('Rainbow Dash',1499,'B',2),
-('Pinkie Pie',1499,'B',3);
+('Wensley',999,'C',3),
+('Princess Cadance',5999,'A',4);

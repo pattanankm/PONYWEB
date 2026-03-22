@@ -51,7 +51,16 @@ const rarityClass = { A: 'rarity-a', B: 'rarity-b', C: 'rarity-c' };
 async function loadPonies(){
   try {
     console.log('Loading ponies from API...');
-    const ponies = await getPonies();
+    const response = await getPonies();
+    
+    // Ensure it's an array and handle errors
+    if (!Array.isArray(response)) {
+      console.error('Invalid response from API:', response);
+      document.getElementById("pony-list").innerHTML = '<p style="text-align:center; padding: 40px; color: #dc2626;">Error loading ponies: Invalid API response. Make sure the backend is running on port 3000.</p>';
+      return;
+    }
+    
+    const ponies = response;
     const user = JSON.parse(localStorage.getItem('customer') || '{}');
     
     // --- แก้ไขจุดนี้ ---

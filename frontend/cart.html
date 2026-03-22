@@ -1,81 +1,381 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<title>Cart - PonyParadise</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart - PonyParadise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+    :root {
+      --pink: #f472b6;
+      --pink-lt: #fce7f3;
+      --purple: #c084fc;
+      --yellow: #fde68a;
+      --dark: #2d1b4e;
+      --radius: 1.2rem;
+    }
 
-<style>
-body{
-font-family:'Nunito',sans-serif;
-background:#fff0fb;
-padding:40px;
-}
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #fff0fb 0%, #f0f4ff 50%, #fffbe6 100%);
+      color: var(--dark);
+      margin: 0;
+      padding: 0;
+    }
 
-h1{
-font-family:'Fredoka One';
-color:#f472b6;
-margin-bottom:30px;
-}
+    /* ── NAVBAR ─────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 2.5rem;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(14px);
+      border-bottom: 1.5px solid rgba(244, 114, 182, 0.18);
+      box-shadow: 0 2px 24px rgba(192, 132, 252, 0.08);
+    }
 
-.cart-item{
-background:white;
-padding:20px;
-border-radius:15px;
-margin-bottom:15px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
-}
+    .nav-logo span {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-.price{
-font-weight:700;
-color:#f472b6;
-}
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
 
-button{
-background:#f472b6;
-border:none;
-color:white;
-padding:8px 14px;
-border-radius:8px;
-cursor:pointer;
-}
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--dark);
+      transition: color 0.2s;
+    }
 
-.total{
-font-size:22px;
-margin-top:30px;
-font-weight:bold;
-}
+    .nav-links a:hover {
+      color: var(--pink);
+    }
 
-.checkout{
-margin-top:20px;
-padding:12px 20px;
-background:#c084fc;
-border:none;
-color:white;
-border-radius:10px;
-cursor:pointer;
-}
-</style>
+    .nav-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
 
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.3rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(244, 114, 182, 0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--pink);
+      color: var(--pink);
+    }
+
+    .btn-outline:hover {
+      background: var(--pink-lt);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: #fff;
+    }
+
+    /* ── MAIN CONTENT ───────────────────────── */
+    main {
+      padding-top: 100px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      padding-bottom: 3rem;
+    }
+
+    .cart-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+    }
+
+    .cart-section {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 2rem;
+    }
+
+    .cart-items {
+      background: #fff;
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      border: 1.5px solid rgba(244, 114, 182, 0.12);
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding: 1.2rem 0;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-name {
+      font-weight: 700;
+      color: #1e293b;
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .item-price {
+      color: var(--pink);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .item-qty {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: 2rem;
+    }
+
+    .qty-btn {
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .qty-btn:hover {
+      background: var(--pink-lt);
+      border-color: var(--pink);
+    }
+
+    .qty-display {
+      width: 40px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .remove-btn {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1.5px solid #fca5a5;
+      cursor: pointer;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      margin-left: 1rem;
+    }
+
+    .remove-btn:hover {
+      background: #fecaca;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+    }
+
+    .cart-empty {
+      text-align: center;
+      color: #888;
+      padding: 3rem;
+      font-size: 1.1rem;
+    }
+
+    .cart-empty a {
+      color: var(--pink);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .cart-summary {
+      background: linear-gradient(135deg, #fef3c7 0%, #fef08a 100%);
+      padding: 2rem;
+      border-radius: var(--radius);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .summary-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.3rem;
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .summary-divider {
+      border-top: 2px solid rgba(0, 0, 0, 0.1);
+      margin: 1rem 0;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--dark);
+    }
+
+    .checkout-btn {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1rem;
+    }
+
+    /* ── FOOTER ─────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #888;
+      margin-top: 3rem;
+    }
+
+    footer span {
+      color: var(--pink);
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 0.8rem 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      main {
+        padding-top: 80px;
+      }
+
+      .cart-section {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-summary {
+        position: static;
+        top: auto;
+      }
+
+      .item-qty {
+        margin-left: 1rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <!-- NAVBAR -->
+  <nav>
+    <div class="nav-logo">
+      <span>🌈 PonyParadise</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home Page</a></li>
+      <li><a href="cart.html">Cart 🛒</a></li>
+      <li><a href="wishlist.html">Wishlist 💖</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-outline">Sign in</a>
+      <a href="register.html" class="btn btn-primary">Register</a>
+    </div>
+  </nav>
 
-<h1>Your Cart 🛒</h1>
+  <!-- MAIN CONTENT -->
+  <main>
+    <h1 class="cart-title">Your Cart 🛒</h1>
+    
+    <div class="cart-section">
+      <!-- Left: Cart Items -->
+      <div class="cart-items">
+        <div id="cart-empty" class="cart-empty">
+          Your cart is empty. <a href="shop.html">Continue shopping</a>.
+        </div>
+        <div id="cart-list"></div>
+      </div>
 
-<div id="cart-list"></div>
+      <!-- Right: Cart Summary -->
+      <div class="cart-summary">
+        <h3 class="summary-title">Summary</h3>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="subtotal">0</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>Free</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-total">
+          <span>Total</span>
+          <span><span id="total-price">0</span> ฿</span>
+        </div>
+        <button class="btn btn-primary checkout-btn" onclick="goCheckout()">Proceed to Checkout</button>
+      </div>
+    </div>
+  </main>
 
-<div class="total">
-Total: <span id="total-price">0</span> ฿
-</div>
+  <!-- FOOTER -->
+  <footer>
+    <p>Made with <span>💖</span> by Group 2 · PonyParadise © 2026</p>
+  </footer>
 
-<button class="checkout" onclick="goCheckout()">Checkout</button>
-
-<script src="js/cart.js"></script>
-<script src="js/navbar.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/navbar.js"></script>
 </body>
 </html>

@@ -34,33 +34,47 @@ const ponyKey = params.get('pony') || 'celestia';
 const ponyName = nameToId[ponyKey];
 
 async function init() {
-  const ponies = await getPonies();
-  const pony = ponies.find(p => p.name === ponyName);
-  if (!pony) return;
+  try {
+    const response = await getPonies();
+    
+    // Ensure response is an array
+    if (!Array.isArray(response)) {
+      console.error('Invalid response from API:', response);
+      document.getElementById('ponyDetailsText').textContent = 'Error loading pony details. Backend may not be running.';
+      return;
+    }
+    
+    const ponies = response;
+    const pony = ponies.find(p => p.name === ponyName);
+    if (!pony) return;
 
-  currentPonyId = pony.pony_id;
+    currentPonyId = pony.pony_id;
 
-  // ดึงค่า Type จากตารางที่ Join มา (pony.type.type_name) 
-  // หรือถ้า backend ส่งแบนๆ มาจะเป็น pony.type_name
-  const displayType = pony.pony_type?.type_name || pony.type_name || 'Unknown';
-  const displayRarity = pony.rarity || 'A';
+    // ดึงค่า Type จากตารางที่ Join มา (pony.type.type_name) 
+    // หรือถ้า backend ส่งแบนๆ มาจะเป็น pony.type_name
+    const displayType = pony.pony_type?.type_name || pony.type_name || 'Unknown';
+    const displayRarity = pony.rarity || 'A';
 
-  document.getElementById('ponyName').textContent = pony.name;
-  document.getElementById('ponyPrice').textContent = Number(pony.price).toLocaleString();
-  document.getElementById('ponyImage').src = ponyImages[pony.name] || '';
-  document.getElementById('ponyDetailsText').textContent = `Type: ${displayType} | Rarity: ${displayRarity}`;
+    document.getElementById('ponyName').textContent = pony.name;
+    document.getElementById('ponyPrice').textContent = Number(pony.price).toLocaleString();
+    document.getElementById('ponyImage').src = ponyImages[pony.name] || '';
+    document.getElementById('ponyDetailsText').textContent = `Type: ${displayType} | Rarity: ${displayRarity}`;
 
-  // Add to cart button
-  const cartBtn = document.querySelector('.btn-primary');
-  if (cartBtn) {
-    cartBtn.onclick = () => {
-      cart.push({ pony_id: pony.pony_id, name: pony.name, price: pony.price, qty: 1 });
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert(pony.name + ' added to cart!');
-    };
+    // Add to cart button
+    const cartBtn = document.querySelector('.btn-primary');
+    if (cartBtn) {
+      cartBtn.onclick = () => {
+        cart.push({ pony_id: pony.pony_id, name: pony.name, price: pony.price, qty: 1 });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(pony.name + ' added to cart!');
+      };
+    }
+
+    loadReviews(currentPonyId);
+  } catch (error) {
+    console.error('Error initializing pony details:', error);
+    document.getElementById('ponyDetailsText').textContent = 'Error loading pony details. Please try again.';
   }
-
-  loadReviews(currentPonyId);
 }
 
 async function loadReviews(pony_id) {
