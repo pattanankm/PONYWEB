@@ -1,55 +1,75 @@
-const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+import { getWishlist, removeFromWishlist } from "./api.js";
 
-const wishlistList = document.getElementById('wishlist-list');
-const totalPriceEl = document.getElementById('wishlist-total');
-const emptyState = document.getElementById('wishlist-empty');
+async function loadWishlist() {
+  const user = JSON.parse(localStorage.getItem('customer') || '{}');
+  const wishlistList = document.getElementById('wishlist-list');
+  const wishlistEmpty = document.getElementById('wishlist-empty');
+  const wishlistTotal = document.getElementById('wishlist-total');
 
-function renderWishlist() {
-  if (!wishlist.length) {
-    emptyState.style.display = 'block';
-    wishlistList.innerHTML = '';
-    totalPriceEl.textContent = '0';
+  // 1. ตรวจสอบว่า Login หรือยัง
+  if (!user.customer_id) {
+    wishlistEmpty.innerHTML = 'Please <a href="login.html">Login</a> to see your wishlist.';
     return;
   }
 
-  emptyState.style.display = 'none';
-  wishlistList.innerHTML = '';
+  try {
+    // 2. ดึงข้อมูลจาก API
+    const res = await getWishlist(user.customer_id);
+    
+    // กันเหนียว: เช็คว่าเป็น Array ไหม
+    const items = Array.isArray(res) ? res : [];
 
-  let total = 0;
+    if (items.length === 0) {
+      wishlistEmpty.style.display = 'block';
+      wishlistList.innerHTML = '';
+      wishlistTotal.textContent = '0';
+      return;
+    }
 
-  wishlist.forEach((item, index) => {
-    const row = document.createElement('div');
-    row.className = 'wishlist-item';
-    row.innerHTML = `
-      <div class="item-left">
-        <div class="item-name">${item.name}</div>
-        <div class="item-price">${Number(item.price).toLocaleString()} ฿</div>
-      </div>
-      <div class="item-actions">
-        <button class="small-btn add-to-cart">Add to cart</button>
-        <button class="small-btn remove-wish">Remove</button>
-      </div>
-    `;
+    // 3. ถ้ามีข้อมูล ให้ซ่อนคำว่า Empty และแสดงรายการ
+    wishlistEmpty.style.display = 'none';
+    
+    let total = 0;
+    wishlistList.innerHTML = items.map(item => {
+      const price = Number(item.price) || 0;
+      total += price;
+      
+      return `
+        <div class="wishlist-item">
+          <div class="item-left">
+            <span class="item-name">${item.name}</span>
+            <span class="item-price">${price.toLocaleString()} ฿</span>
+          </div>
+          <div class="item-actions">
+            <button class="small-btn" onclick="removeItem(${item.wishlist_id})">❌ Remove</button>
+          </div>
+        </div>
+      `;
+    }).join('');
 
-    row.querySelector('.add-to-cart').addEventListener('click', () => {
-      cart.push({ pony_id: item.pony_id, name: item.name, price: item.price, qty: 1 });
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert(item.name + ' added to cart');
-    });
+    // 4. อัปเดตราคาสูงสุด
+    wishlistTotal.textContent = total.toLocaleString();
 
-    row.querySelector('.remove-wish').addEventListener('click', () => {
-      wishlist.splice(index, 1);
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
-      renderWishlist();
-    });
-
-    wishlistList.appendChild(row);
-    total += Number(item.price);
-  });
-
-  totalPriceEl.textContent = total.toLocaleString();
+  } catch (error) {
+    console.error('Error loading wishlist:', error);
+    wishlistEmpty.textContent = 'Failed to load wishlist. Please try again later.';
+  }
 }
 
-renderWishlist();
+// 5. ฟังก์ชันสำหรับลบไอเทม (ต้องผูกกับ window เพื่อให้ปุ่มใน HTML เรียกใช้ได้)
+window.removeItem = async (wishlist_id) => {
+  if (confirm('Do you want to remove this pony from your wishlist?')) {
+    try {
+      const result = await removeFromWishlist(wishlist_id);
+      if (result) {
+        alert('Removed successfully! ✨');
+        loadWishlist(); // โหลดข้อมูลใหม่ทันที
+      }
+    } catch (error) {
+      alert('Error removing item');
+    }
+  }
+};
 
+// เริ่มทำงานเมื่อโหลดหน้า
+loadWishlist();

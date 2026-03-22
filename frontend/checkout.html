@@ -293,7 +293,7 @@ input:focus, select:focus, textarea:focus {
     <form id="checkout-form">
       <div class="form-group">
         <label for="name">Full Name</label>
-        <input id="name" name="name" type="text" required placeholder="Value" />
+        <input id="name" name="name" type="text" required placeholder="Ex : Khaimook Inwza" />
       </div>
 
       <div class="form-group">
@@ -362,7 +362,22 @@ const ponyInfo = {
   'Rarity': { type: 'Unicorn', rarity: 'B' },
   'Pinkie Pie': { type: 'Earth Pony', rarity: 'B' },
   'Twilight Sparkle': { type: 'Alicorn', rarity: 'A' },
-  'Rainbow Dash': { type: 'Pegasus', rarity: 'B' }
+  'Rainbow Dash': { type: 'Pegasus', rarity: 'B' },
+  'Wensley': { type: 'Earth Pony', rarity: 'C' },
+  'Princess Cadance': { type: 'Alicorn', rarity: 'A' }
+};
+
+const ponyImages = {
+  'Princess Celestia': 'images/ponyceles.png',
+  'Princess Luna': 'images/ponyluna.png',
+  'Applejack': 'images/ponyapplejack.png',
+  'Fluttershy': 'images/ponyflutter.jpg',
+  'Rarity': 'images/ponyrarity.png',
+  'Pinkie Pie': 'images/ponypinkypie.png',
+  'Twilight Sparkle': 'images/ponytwi.webp',
+  'Rainbow Dash': 'images/ponyRainbowDash.png',
+  'Wensley': 'images/ponyWensley.webp',
+  'Princess Cadance': 'images/ponycadence.webp'
 };
 
 const cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -390,7 +405,8 @@ function renderSummary(){
     const itemDiv = document.createElement('div');
     itemDiv.className = 'order-item';
     itemDiv.innerHTML = `
-      <img src="https://placehold.co/80x80/fce7f3/c084fc?text=🐴" alt="${item.name}" class="order-item-image" onerror="this.src='https://placehold.co/80x80/fce7f3/c084fc?text=🐴'" />
+      <img src="${ponyImages[item.name] || 'https://placehold.co/80x80/fce7f3/c084fc?text=🐴'}" alt="${item.name}
+      " class="order-item-image" onerror="this.src='https://placehold.co/80x80/fce7f3/c084fc?text=🐴'" />
       <div class="order-item-info">
         <div class="order-item-name">${item.name}</div>
         <div class="order-item-type">Pony Type : ${info.type}</div>
@@ -407,7 +423,7 @@ function renderSummary(){
 }
 
 if (form && cart.length > 0) {
-  form.addEventListener('submit', event => {
+    form.addEventListener('submit', async event => {
     event.preventDefault();
 
     if (!cart.length){
@@ -430,13 +446,28 @@ if (form && cart.length > 0) {
       total: Number(totalPrice.textContent.replace(/,/g, ''))
     };
 
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    orders.push(order);
-    localStorage.setItem('orders', JSON.stringify(orders));
-    localStorage.setItem('cart', JSON.stringify([]));
+    const user = JSON.parse(localStorage.getItem('customer') || '{}');
 
-    alert('Order placed! ID: ' + order.id);
-    window.location.href = 'index.html';
+const res = await fetch('http://localhost:3000/orders', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    customer_id: user.customer_id || null,
+    total: Number(totalPrice.textContent.replace(/,/g, '')),
+    status: 'pending',
+    items: cart
+  })
+});
+
+const data = await res.json();
+if (res.ok) {
+  localStorage.setItem('cart', JSON.stringify([]));
+  alert('Order placed! ID: ' + data.order_id);
+  window.location.href = 'index.html';
+} else {
+  alert('Error: ' + (data.message || 'Order failed'));
+}
+
   });
 }
 
