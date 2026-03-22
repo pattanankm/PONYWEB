@@ -63,3 +63,12 @@ export async function removeFromWishlist(wishlist_id) {
   });
   return res.json();
 }
+
+export async function addOrder(customer_id, total, items) {
+  const res = await fetch(API + '/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ customer_id, total, status: 'pending', items })
+  });
+  return res.json();
+}
