@@ -71,6 +71,14 @@ async function loadPonies(){
       return;
     }
 
+    // Sort ponies by rarity: A, B, C
+    ponies.sort((a, b) => {
+      const rarityOrder = { 'A': 0, 'B': 1, 'C': 2 };
+      const rarityA = (ponyInfo[a.name]?.rarity || 'C');
+      const rarityB = (ponyInfo[b.name]?.rarity || 'C');
+      return rarityOrder[rarityA] - rarityOrder[rarityB];
+    });
+
     const list = document.getElementById("pony-list");
 
     ponies.forEach(p => {
