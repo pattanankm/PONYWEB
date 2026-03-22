@@ -1,4 +1,4 @@
-import { getPonies } from "./api.js";
+import { getPonies, getWishlist, addToWishlist, removeFromWishlist } from "./api.js";
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
@@ -20,16 +20,16 @@ const nameToId = {
 
 // Map pony names to image files
 const ponyImages = {
-  'Princess Celestia': 'images/ponyceles.png',
-  'Princess Luna': 'images/ponyluna.png',
-  'Applejack': 'images/ponyapplejack.png',
-  'Fluttershy': 'images/ponyflutter.jpg',
-  'Rarity': 'images/ponyrarity.png',
-  'Pinkie Pie': 'images/ponypinkypie.png',
-  'Twilight Sparkle': 'images/ponytwi.webp',
-  'Rainbow Dash': 'images/ponyRainbowDash.png',
-  'Wensley': 'images/ponyWensley.webp',
-  'Princess Cadance': 'images/ponycadence.webp'
+  'Princess Celestia': '/frontend/images/ponyceles.png',
+  'Princess Luna': '/frontend/images/ponyluna.png',
+  'Applejack': '/frontend/images/ponyapplejack.png',
+  'Fluttershy': '/frontend/images/ponyflutter.jpg',
+  'Rarity': '/frontend/images/ponyrarity.png',
+  'Pinkie Pie': '/frontend/images/ponypinkypie.png',
+  'Twilight Sparkle': '/frontend/images/ponytwi.webp',
+  'Rainbow Dash': '/frontend/images/ponyRainbowDash.png',
+  'Wensley': '/frontend/images/ponyWensley.webp',
+  'Princess Cadance': '/frontend/images/ponycadence.webp'
 };
 
 // Pony types and rarity info
@@ -52,6 +52,17 @@ async function loadPonies(){
   try {
     console.log('Loading ponies from API...');
     const ponies = await getPonies();
+    const user = JSON.parse(localStorage.getItem('customer') || '{}');
+    
+    // --- แก้ไขจุดนี้ ---
+    let wishlistData = [];
+    if (user.customer_id) {
+        const response = await getWishlist(user.customer_id);
+        wishlistData = Array.isArray(response) ? response : [];
+    }
+    let dbWishlist = wishlistData;
+    // -----------------
+
     console.log('Ponies loaded:', ponies);
     
     if (!ponies || ponies.length === 0) {
@@ -88,30 +99,30 @@ async function loadPonies(){
   `;
 
       const wishlistBtn = card.querySelector('.wishlist-btn');
-      const isWishlisted = () => wishlist.some((item) => item.pony_id === p.pony_id);
+      const isWishlisted = () => dbWishlist.some(w => w.pony_id === p.pony_id);
       const refreshWishlistButton = () => {
         wishlistBtn.textContent = isWishlisted() ? '❤️' : '🤍';
       };
       refreshWishlistButton();
 
-      wishlistBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+wishlistBtn.addEventListener('click', async (e) => {
+  e.stopPropagation();
+  const user = JSON.parse(localStorage.getItem('customer') || '{}');
+  if (!user.customer_id) { alert('Please login first'); return; }
 
-        if (isWishlisted()) {
-          wishlist = wishlist.filter((item) => item.pony_id !== p.pony_id);
-          alert(`${p.name} removed from wishlist`);
-        } else {
-          wishlist.push({
-            pony_id: p.pony_id,
-            name: p.name,
-            price: p.price
-          });
-          alert(`${p.name} added to wishlist`);
-        }
+  if (isWishlisted()) {
+    const found = dbWishlist.find(w => w.pony_id === p.pony_id);
+    if (found) await removeFromWishlist(found.wishlist_id);
+    dbWishlist = dbWishlist.filter(w => w.pony_id !== p.pony_id);
+    alert(`${p.name} removed from wishlist`);
+  } else {
+    const result = await addToWishlist(user.customer_id, p.pony_id);
+    dbWishlist.push({ wishlist_id: result.wishlist_id, pony_id: p.pony_id });
+    alert(`${p.name} added to wishlist`);
+  }
 
-        saveWishlist();
-        refreshWishlistButton();
-      });
+  refreshWishlistButton();
+});
 
       // Make card clickable to go to detail page
       card.addEventListener('click', (e) => {

@@ -28,3 +28,38 @@ async function register(username,email,password){
 
   return res.json()
 }
+
+export async function getReviews(pony_id) {
+  const res = await fetch(API + "/review/" + pony_id);
+  return res.json();
+}
+
+export async function addReview(customer_id, pony_id, rating, comment) {
+  const res = await fetch(API + "/review", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ customer_id, pony_id, rating, comment })
+  });
+  return res.json();
+}
+
+export async function getWishlist(customer_id) {
+  const res = await fetch(API + '/wishlist/' + customer_id);
+  return res.json();
+}
+
+export async function addToWishlist(customer_id, pony_id) {
+  const res = await fetch(API + '/wishlist', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ customer_id, pony_id })
+  });
+  return res.json();
+}
+
+export async function removeFromWishlist(wishlist_id) {
+  const res = await fetch(API + '/wishlist/' + wishlist_id, {
+    method: 'DELETE'
+  });
+  return res.json();
+}
