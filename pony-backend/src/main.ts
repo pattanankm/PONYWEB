@@ -1,13 +1,16 @@
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: '*', // ยอมรับการเรียกจากทุกที่ (รวมถึงมือถือคุณด้วย)
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   });
 
-  // แก้ตรงนี้: ให้ใช้พอร์ตจาก Render ถ้าไม่มีค่อยใช้ 3000
-  const port = process.env.PORT || 3000;
+  // เช็กบรรทัดนี้ดีๆ ครับ ต้องมี process.env.PORT
+  const port = process.env.PORT || 3000; 
   await app.listen(port);
-  console.log(`Application is running on: ${port}`);
 }
+bootstrap(); // เช็กว่ามีวงเล็บปิดและเซมิโคลอนครบไหม
