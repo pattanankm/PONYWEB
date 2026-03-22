@@ -49,6 +49,7 @@
 
     .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a {
+      display: inline-flex; align-items: center;
       text-decoration: none; font-weight: 700; font-size: 0.95rem;
       color: var(--dark); transition: color .2s;
     }
@@ -177,9 +178,9 @@
     <span>🌈 PonyParadise</span>
   </div>
   <ul class="nav-links">
-    <li><a href="index.html">Products</a></li>
-    <li><a href="#">Cart 🛒</a></li>
-    <li><a href="#">Wishlist 💖</a></li>
+    <li><a href="index.html">Home Page</a></li>
+    <li><a href="cart.html">Cart 🛒</a></li>
+    <li><a href="wishlist.html">Wishlist 💖</a></li>
   </ul>
   <div class="nav-actions">
     <a href="login.html" class="btn btn-outline">Sign in</a>
@@ -198,8 +199,8 @@
   <p>Made with <span>💖</span> by Group 2 · PonyParadise © 2026</p>
 </footer>
 
-<script src="js/api.js"></script>
-<script src="js/shop.js"></script>
 
+<script type="module" src="js/shop.js"></script>
+<script src="js/navbar.js"></script>
 </body>
 </html>

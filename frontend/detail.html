@@ -317,15 +317,16 @@
     <span>🌈 PonyParadise</span>
   </div>
   <ul class="nav-links">
-    <li><a href="index.html">Products</a></li>
-    <li><a href="#">Cart 🛒</a></li>
-    <li><a href="#">Wishlist 💖</a></li>
+    <li><a href="index.html">Home Page</a></li>
+    <li><a href="cart.html">Cart</a></li>
+    <li><a href="wishlist.html">Wishlist <3 </a></li>
   </ul>
   <div class="nav-actions">
     <a href="login.html" class="btn btn-outline">Sign in</a>
     <a href="register.html" class="btn btn-primary">Register</a>
   </div>
 </nav>
+
 
 <!-- MAIN CONTENT -->
 <main>
@@ -402,43 +403,36 @@
   </div>
 </main>
 
+
+<!-- Add Review Form -->
+<div style="margin-top:2rem; background:white; border-radius:1.2rem; padding:1.5rem; box-shadow:0 2px 12px rgba(192,132,252,.1);">
+  <h3 style="font-family:'Fredoka One'; margin-bottom:1rem;">Write a Review ✍️</h3>
+  <div style="margin-bottom:1rem;">
+    <label style="font-weight:700;">Rating</label>
+    <select id="ratingInput" style="width:100%; padding:8px; border:1.5px solid #e5e7eb; border-radius:8px; margin-top:4px;">
+      <option value="5">★★★★★</option>
+      <option value="4">★★★★☆</option>
+      <option value="3">★★★☆☆</option>
+      <option value="2">★★☆☆☆</option>
+      <option value="1">★☆☆☆☆</option>
+    </select>
+  </div>
+  <div style="margin-bottom:1rem;">
+  <label style="font-weight:700;">Comment</label>
+  <textarea id="commentInput" placeholder="Write your review..."
+    style="width:100%; padding:8px; border:1.5px solid #e5e7eb; border-radius:8px; margin-top:4px; height:80px; font-family:'Nunito'; resize:none;"></textarea>
+</div>
+  <button onclick="submitReview()" style="background:linear-gradient(135deg,#f472b6,#c084fc); color:white; border:none; padding:10px 20px; border-radius:50px; font-weight:700; cursor:pointer; width:100%;">
+    Submit Review 🌟
+  </button>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <p>Made with <span>💖</span> by Group 2 · PonyParadise © 2026</p>
 </footer>
 
-<script>
-  // Pony data (matches index.html)
-  const ponies = {
-    'celestia': { name: 'Princess Celestia', type: 'Alicorn', rarity: 'A', price: 5999, img: 'images/ponyceles.png' },
-    'luna': { name: 'Princess Luna', type: 'Alicorn', rarity: 'A', price: 5999, img: 'images/ponyluna.png' },
-    'applejack': { name: 'Applejack', type: 'Earth Pony', rarity: 'B', price: 1499, img: 'images/ponyapplejack.png' },
-    'fluttershy': { name: 'Fluttershy', type: 'Pegasus', rarity: 'B', price: 1499, img: 'images/ponyflutter.jpg' },
-    'rarity': { name: 'Rarity', type: 'Unicorn', rarity: 'B', price: 1499, img: 'images/ponyrarity.png' },
-    'pinkie': { name: 'Pinkie Pie', type: 'Earth Pony', rarity: 'B', price: 1499, img: 'images/ponypinkypie.png' },
-    'twilight': { name: 'Twilight Sparkle', type: 'Alicorn', rarity: 'A', price: 1499, img: 'images/ponytwi.webp' },
-    'rainbow': { name: 'Rainbow Dash', type: 'Pegasus', rarity: 'B', price: 1499, img: 'images/ponyRainbowDash.png' }
-  };
-
-  // Get pony from URL
-  const params = new URLSearchParams(window.location.search);
-  const ponyId = params.get('pony') || 'celestia';
-  const pony = ponies[ponyId];
-
-  if (pony) {
-    document.getElementById('ponyName').textContent = pony.name;
-    document.getElementById('ponyPrice').textContent = pony.price.toLocaleString();
-    document.getElementById('ponyImage').src = pony.img;
-    document.getElementById('ponyDetailsText').textContent = `${pony.type} - Rarity: ${pony.rarity}`;
-  }
-
-  // Details toggle
-  document.getElementById('detailsToggle').addEventListener('click', () => {
-    const toggle = document.getElementById('detailsToggle');
-    const content = document.getElementById('detailsContent');
-    toggle.classList.toggle('collapsed');
-    content.style.display = content.style.display === 'none' ? 'block' : 'none';
-  });
-</script>
+<script type="module" src="js/detail.js"></script>
+<script src="js/navbar.js"></script>
 </body>
 </html>
