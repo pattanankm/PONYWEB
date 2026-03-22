@@ -44,6 +44,7 @@ CREATE TABLE review (
   customer_id INT,
   pony_id INT,
   rating INT,
+  comment TEXT,
   FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
   FOREIGN KEY (pony_id) REFERENCES pony(pony_id)
 );

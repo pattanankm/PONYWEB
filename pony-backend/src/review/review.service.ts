@@ -7,12 +7,12 @@ export class ReviewService {
   constructor(@InjectDataSource() private dataSource: DataSource) {}
 
   async addReview(customer_id: number, pony_id: number, rating: number, comment: string) {
-  await this.dataSource.query(
-    'INSERT INTO review (customer_id, pony_id, rating, comment) VALUES (?, ?, ?, ?)',
-    [customer_id, pony_id, rating, comment]
-  );
-  return { message: 'Review added' };
-}
+    const result = await this.dataSource.query(
+      'INSERT INTO review (customer_id, pony_id, rating, comment) VALUES (?, ?, ?, ?)',
+      [customer_id, pony_id, rating, comment]
+    );
+    return { message: 'Review added', review_id: result.insertId };
+  }
 
   async getReviews(pony_id: number) {
     return this.dataSource.query(

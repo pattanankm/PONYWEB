@@ -60,14 +60,18 @@ async function init() {
     document.getElementById('ponyImage').src = ponyImages[pony.name] || '';
     document.getElementById('ponyDetailsText').textContent = `Type: ${displayType} | Rarity: ${displayRarity}`;
 
-    // Add to cart button
-    const cartBtn = document.querySelector('.btn-primary');
+    // Add to cart button - select the button inside cart-action
+    const cartBtn = document.querySelector('.cart-action .btn-primary');
     if (cartBtn) {
-      cartBtn.onclick = () => {
+      cartBtn.onclick = (e) => {
+        e.preventDefault();
         cart.push({ pony_id: pony.pony_id, name: pony.name, price: pony.price, qty: 1 });
         localStorage.setItem('cart', JSON.stringify(cart));
         alert(pony.name + ' added to cart!');
+        setTimeout(() => window.location.href = 'cart.html', 500);
       };
+    } else {
+      console.error('Cart button not found');
     }
 
     loadReviews(currentPonyId);
@@ -78,24 +82,49 @@ async function init() {
 }
 
 async function loadReviews(pony_id) {
-  const reviews = await getReviews(pony_id);
-  const grid = document.getElementById('reviewsGrid');
+  try {
+    let reviews = await getReviews(pony_id);
+    const grid = document.getElementById('reviewsGrid');
 
-  if (!reviews || !reviews.length) {
-    grid.innerHTML = '<p style="color:#9ca3af;">No reviews yet.</p>';
-    return;
-  }
+    if (!grid) {
+      console.error('reviewsGrid element not found');
+      return;
+    }
 
-  grid.innerHTML = reviews.map(r => `
-    <div class="review-card">
-      <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-      <div class="review-text">${r.comment || ''}</div> 
-      <div class="review-author">
-        <div class="review-avatar">${(r.username || 'U')[0].toUpperCase()}</div>
-        <div class="review-name">${r.username || 'User'}</div>
+    // Handle API response format - might be wrapped in 'value'
+    if (reviews && reviews.value) {
+      reviews = reviews.value;
+    }
+    
+    // If reviews is not an array, make it an array
+    if (!Array.isArray(reviews)) {
+      reviews = [];
+    }
+
+    console.log('Reviews loaded:', reviews, 'Count:', reviews.length);
+
+    if (reviews.length === 0) {
+      grid.innerHTML = '<p style="color:#9ca3af; text-align:center; padding:2rem;">No reviews yet. Be the first to review! ⭐</p>';
+      return;
+    }
+
+    grid.innerHTML = reviews.map(r => `
+      <div class="review-card">
+        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+        <div class="review-text">${r.comment || 'No comment'}</div> 
+        <div class="review-author">
+          <div class="review-avatar">${(r.username || 'U')[0].toUpperCase()}</div>
+          <div class="review-name">${r.username || 'Anonymous'}</div>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `).join('');
+  } catch (error) {
+    console.error('Error loading reviews:', error);
+    const grid = document.getElementById('reviewsGrid');
+    if (grid) {
+      grid.innerHTML = '<p style="color:#dc2626;">Error loading reviews. Please try again.</p>';
+    }
+  }
 }
 
 async function submitReview() {
@@ -104,25 +133,38 @@ async function submitReview() {
     alert('Please login first'); 
     return; 
   }
-  if (!currentPonyId) return;
+  if (!currentPonyId) {
+    alert('Pony details not loaded');
+    return;
+  }
 
   const rating = Number(document.getElementById('ratingInput').value);
   const commentInput = document.getElementById('commentInput');
   const comment = commentInput.value.trim();
 
+  if (!comment) {
+    alert('Please write a comment');
+    return;
+  }
+
   try {
     const data = await addReview(user.customer_id, currentPonyId, rating, comment);
     
-    if (data && (data.message || data.review_id)) {
-      alert('Review submitted! 🌟');
+    if (data && data.message) {
+      alert('✓ Review submitted successfully! 🌟');
       commentInput.value = ''; // เคลียร์ช่องพิมพ์
-      loadReviews(currentPonyId);
+      document.getElementById('ratingInput').value = '5'; // Reset rating
+      
+      // Reload reviews after a short delay to ensure data is saved
+      setTimeout(() => {
+        loadReviews(currentPonyId);
+      }, 500);
     } else {
-      alert('Error: ' + (data.message || 'Failed to submit'));
+      alert('Error: ' + (data.message || 'Failed to submit review'));
     }
   } catch (error) {
-    console.error(error);
-    alert('An error occurred while submitting.');
+    console.error('Error submitting review:', error);
+    alert('Error: ' + error.message);
   }
 }
 
