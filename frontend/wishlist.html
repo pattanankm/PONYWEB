@@ -19,7 +19,11 @@
 
     body {
       font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #fff0fb 0%, #f0f4ff 50%, #fffbe6 100%);
+      background-image: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)),
+                        url('images/ponypayment.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: var(--dark);
       margin: 0;
       padding: 0;
@@ -290,7 +294,7 @@
 
   <!-- MAIN CONTENT -->
   <main>
-    <h1 class="wishlist-title">Wishlist</h1>
+    <h1 class="wishlist-title">Wishlist 💖</h1>
     <div class="wishlist-section">
       <div id="wishlist-empty">Your wishlist is empty. <a href="shop.html">Browse ponies</a>.</div>
       <div id="wishlist-list"></div>

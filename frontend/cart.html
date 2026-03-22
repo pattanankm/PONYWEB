@@ -19,7 +19,11 @@
 
     body {
       font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #fff0fb 0%, #f0f4ff 50%, #fffbe6 100%);
+      background-image: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)),
+                        url('images/ponypayment.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: var(--dark);
       margin: 0;
       padding: 0;
@@ -28,9 +32,7 @@
     /* ── NAVBAR ─────────────────────────────── */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 100;
       display: flex;
       align-items: center;
@@ -54,8 +56,7 @@
       display: flex;
       gap: 2rem;
       list-style: none;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
     }
 
     .nav-links a {
@@ -68,14 +69,9 @@
       transition: color 0.2s;
     }
 
-    .nav-links a:hover {
-      color: var(--pink);
-    }
+    .nav-links a:hover { color: var(--pink); }
 
-    .nav-actions {
-      display: flex;
-      gap: 0.75rem;
-    }
+    .nav-actions { display: flex; gap: 0.75rem; }
 
     .btn {
       display: inline-flex;
@@ -103,9 +99,7 @@
       color: var(--pink);
     }
 
-    .btn-outline:hover {
-      background: var(--pink-lt);
-    }
+    .btn-outline:hover { background: var(--pink-lt); }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--pink), var(--purple));
@@ -137,6 +131,7 @@
       gap: 2rem;
     }
 
+    /* ── CART ITEMS PANEL ───────────────────── */
     .cart-items {
       background: #fff;
       padding: 2rem;
@@ -149,17 +144,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #f0e6fb;
       padding: 1.2rem 0;
+      gap: 15px;
     }
 
-    .cart-item:last-child {
-      border-bottom: none;
-    }
+    .cart-item:last-child { border-bottom: none; }
 
-    .item-info {
-      flex: 1;
-    }
+    .item-info { flex: 1; }
 
     .item-name {
       font-weight: 700;
@@ -174,35 +166,46 @@
       font-size: 0.95rem;
     }
 
-    .item-qty {
+    /* ── QUANTITY CONTROL ───────────────────── */
+    .quantity-control {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      margin-left: 2rem;
+      gap: 8px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 4px 10px;
+      background: #fafafa;
+      transition: border-color 0.2s;
     }
 
-    .qty-btn {
-      background: #f0f0f0;
-      border: 1px solid #ddd;
-      width: 28px;
-      height: 28px;
-      border-radius: 4px;
+    .quantity-control:hover { border-color: var(--pink); }
+
+    .quantity-control button {
+      background: none;
+      border: none;
+      color: var(--pink);
+      font-size: 20px;
+      font-weight: 700;
       cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
+      padding: 0 4px;
+      line-height: 1;
+      transition: color 0.2s, transform 0.15s;
     }
 
-    .qty-btn:hover {
-      background: var(--pink-lt);
-      border-color: var(--pink);
+    .quantity-control button:hover {
+      color: var(--purple);
+      transform: scale(1.2);
     }
 
-    .qty-display {
-      width: 40px;
+    .quantity-control span {
+      min-width: 30px;
       text-align: center;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--dark);
     }
 
+    /* ── REMOVE BUTTON ──────────────────────── */
     .remove-btn {
       background: #fee2e2;
       color: #dc2626;
@@ -211,9 +214,10 @@
       border-radius: 8px;
       padding: 0.5rem 1rem;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
+      font-family: 'Nunito', sans-serif;
       transition: all 0.2s;
-      margin-left: 1rem;
+      white-space: nowrap;
     }
 
     .remove-btn:hover {
@@ -222,6 +226,7 @@
       box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
     }
 
+    /* ── EMPTY STATE ────────────────────────── */
     .cart-empty {
       text-align: center;
       color: #888;
@@ -235,6 +240,7 @@
       font-weight: 700;
     }
 
+    /* ── CART SUMMARY ───────────────────────── */
     .cart-summary {
       background: linear-gradient(135deg, #fef3c7 0%, #fef08a 100%);
       padding: 2rem;
@@ -277,6 +283,7 @@
       width: 100%;
       margin-top: 1.5rem;
       padding: 1rem;
+      font-size: 1rem;
     }
 
     /* ── FOOTER ─────────────────────────────── */
@@ -287,39 +294,20 @@
       margin-top: 3rem;
     }
 
-    footer span {
-      color: var(--pink);
-    }
+    footer span { color: var(--pink); }
 
+    /* ── RESPONSIVE ─────────────────────────── */
     @media (max-width: 768px) {
-      nav {
-        padding: 0.8rem 1rem;
-      }
-
-      .nav-links {
-        gap: 1rem;
-      }
-
-      main {
-        padding-top: 80px;
-      }
-
-      .cart-section {
-        grid-template-columns: 1fr;
-      }
-
-      .cart-summary {
-        position: static;
-        top: auto;
-      }
-
-      .item-qty {
-        margin-left: 1rem;
-      }
+      nav { padding: 0.8rem 1rem; }
+      .nav-links { gap: 1rem; }
+      main { padding-top: 80px; }
+      .cart-section { grid-template-columns: 1fr; }
+      .cart-summary { position: static; top: auto; }
     }
   </style>
 </head>
 <body>
+
   <!-- NAVBAR -->
   <nav>
     <div class="nav-logo">
@@ -339,11 +327,12 @@
   <!-- MAIN CONTENT -->
   <main>
     <h1 class="cart-title">Your Cart 🛒</h1>
-    
+
     <div class="cart-section">
+
       <!-- Left: Cart Items -->
       <div class="cart-items">
-        <div id="cart-empty" class="cart-empty">
+        <div id="cart-empty" class="cart-empty" style="display:none;">
           Your cart is empty. <a href="shop.html">Continue shopping</a>.
         </div>
         <div id="cart-list"></div>
@@ -351,22 +340,25 @@
 
       <!-- Right: Cart Summary -->
       <div class="cart-summary">
-        <h3 class="summary-title">Summary</h3>
+        <h3 class="summary-title">🧾 Summary</h3>
         <div class="summary-row">
           <span>Subtotal</span>
-          <span id="subtotal">0</span>
+          <span id="subtotal">0 ฿</span>
         </div>
         <div class="summary-row">
           <span>Shipping</span>
-          <span>Free</span>
+          <span>Free 🎉</span>
         </div>
         <div class="summary-divider"></div>
         <div class="summary-total">
           <span>Total</span>
-          <span><span id="total-price">0</span> ฿</span>
+          <span id="total-price">0 ฿</span>
         </div>
-        <button class="btn btn-primary checkout-btn" onclick="goCheckout()">Proceed to Checkout</button>
+        <button class="btn btn-primary checkout-btn" onclick="goCheckout()">
+          Proceed to Checkout ✨
+        </button>
       </div>
+
     </div>
   </main>
 
