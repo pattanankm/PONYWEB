@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity('pony_type')
 export class PonyType {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   type_id: number;
 
   @Column()
