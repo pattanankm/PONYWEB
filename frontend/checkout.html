@@ -9,6 +9,10 @@
 body {
   font-family:'Nunito',sans-serif;
   background: linear-gradient(135deg, #fff0fb 0%, #e0f2fe 50%, #fff0fb 100%);
+  background-image: url('images/ponylogin.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   min-height: 100vh;
   padding: 20px;
 }
@@ -48,6 +52,7 @@ body {
   gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
+  align-items: start;
 }
 
 .shipping-section {
@@ -153,10 +158,11 @@ input:focus, select:focus, textarea:focus {
 }
 
 .order-summary-section {
-  background: linear-gradient(135deg, #fef3c7 0%, #fef08a 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(254, 243, 199, 0.95));
   padding: 30px;
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  backdrop-filter: blur(10px);
 }
 
 .order-summary-section h2 {
@@ -171,7 +177,7 @@ input:focus, select:focus, textarea:focus {
   flex-direction: column;
   gap: 16px;
   margin-bottom: 20px;
-  max-height: 400px;
+  max-height: 280px;
   overflow-y: auto;
   padding-right: 10px;
 }
