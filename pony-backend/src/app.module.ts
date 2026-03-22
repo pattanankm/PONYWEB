@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomerModule } from './customer/customer.module';
 import { OrdersModule } from './orders/orders.module';
 import { ReviewModule } from './review/review.module';
-import { PonyType } from './pony/pony-type.entity';
+import { WishlistModule } from './wishlist/wishlist.module'; // อย่าลืมตัวนี้ที่เราเพิ่งทำกัน!
 
 @Module({
   imports: [
@@ -19,13 +19,17 @@ import { PonyType } from './pony/pony-type.entity';
       database: process.env.DB_NAME || 'pony_shop',
       autoLoadEntities: true,
       synchronize: false,
+      // เพิ่ม SSL เพื่อให้ต่อกับ TiDB Cloud ได้ (ถ้ามี Host แปลว่ารันบน Render/Cloud)
+      ssl: process.env.DB_HOST ? { rejectUnauthorized: false } : null,
     }),
 
     PonyModule,
-    PonyType,
     CustomerModule,
     OrdersModule, 
     ReviewModule,
+    WishlistModule, // เพิ่ม Module ของ Wishlist เข้าไปด้วยครับ
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
