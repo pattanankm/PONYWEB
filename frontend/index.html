@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PonyParadise – A Paradise for Pony Lovers</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-  <style>
+  <style> 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -40,7 +40,7 @@
       box-shadow: 0 2px 24px rgba(192,132,252,0.08);
     }
 
-    .nav-logo img { height: 44px; }
+    .nav-logo img { height: 60px; }
     .nav-logo span {
       font-family: 'Fredoka One', cursive;
       font-size: 1.5rem;
@@ -68,7 +68,9 @@
     .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,114,182,.3); }
 
     .btn-outline {
-      background: transparent; border: 2px solid var(--pink); color: var(--pink);
+      background: rgba(252, 231, 243, 0.85);   /* ← เพิ่มบรรทัดนี้ */
+      border: 2px solid var(--pink); 
+      color: var(--pink);
     }
     .btn-outline:hover { background: var(--pink-lt); }
 
@@ -87,29 +89,44 @@
       position: relative; overflow: hidden;
     }
 
+    /* ── HERO BACKGROUND IMAGE ──────────────── */
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 30%, rgba(252,231,243,.9) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(186,230,253,.5) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 35% at 10% 70%, rgba(187,247,208,.45) 0%, transparent 60%);
+      background-image: url('images/ponyhome.jpg');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-blend-mode: lighten;
     }
 
-    /* floating blobs */
-    .blob {
-      position: absolute; border-radius: 50%; filter: blur(40px);
-      animation: float 6s ease-in-out infinite;
+    /* Overlay to keep text readable */
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(252,231,243,0.72) 10%,
+        rgba(237,233,254,0.60) 50%,
+        rgba(186,230,253,0.55) 100%
+      );
     }
-    .blob-1 { width:320px; height:320px; background:rgba(244,114,182,.25); top:-80px; left:-80px; animation-delay:0s; }
-    .blob-2 { width:260px; height:260px; background:rgba(192,132,252,.2); top:60%; right:-60px; animation-delay:2s; }
-    .blob-3 { width:200px; height:200px; background:rgba(253,230,138,.35); bottom:40px; left:30%; animation-delay:4s; }
+
+    /* floating blobs — kept but more subtle over the image */
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(50px);
+      animation: float 6s ease-in-out infinite;
+      z-index: 1;
+    }
+    .blob-1 { width:280px; height:280px; background:rgba(244,114,182,.18); top:-60px; left:-60px; animation-delay:0s; }
+    .blob-2 { width:220px; height:220px; background:rgba(192,132,252,.15); top:60%; right:-50px; animation-delay:2s; }
+    .blob-3 { width:180px; height:180px; background:rgba(253,230,138,.20); bottom:40px; left:30%; animation-delay:4s; }
 
     @keyframes float {
       0%,100% { transform: translateY(0) scale(1); }
       50%      { transform: translateY(-20px) scale(1.04); }
     }
 
-    .hero-content { position: relative; z-index: 1; }
+    .hero-content { position: relative; z-index: 2; }
 
     .hero-badge {
       display: inline-block;
@@ -123,7 +140,9 @@
 
     .hero-logo {
       width: min(380px, 80vw);
+      
       margin-bottom: 1rem;
+      margin-top: -10rem; 
       animation: popIn .6s .1s ease both;
       filter: drop-shadow(0 8px 24px rgba(244,114,182,.3));
     }
@@ -133,7 +152,7 @@
       font-size: clamp(1rem, 2vw, 1.25rem);
       letter-spacing: .25em; text-transform: uppercase;
       background: linear-gradient(90deg, var(--pink), var(--purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      /* -webkit-background-clip: text; -webkit-text-fill-color: transparent; */
       margin-bottom: 2rem;
       animation: popIn .6s .2s ease both;
     }
@@ -141,25 +160,8 @@
     .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
       animation: popIn .6s .35s ease both; }
 
-    .hero-img-wrap {
-      position: relative; z-index: 1; margin-top: 2.5rem;
-      animation: riseUp .8s .4s ease both;
-    }
-    .hero-img-wrap img {
-      width: min(680px, 90vw);
-      border-radius: 2rem;
-      box-shadow: 0 24px 80px rgba(192,132,252,.25), 0 4px 16px rgba(244,114,182,.15);
-    }
-    /* sparkle dots around hero image */
-    .sparkle {
-      position: absolute; border-radius: 50%;
-      background: var(--yellow);
-      animation: sparkle 2s ease-in-out infinite;
-    }
-    .sparkle:nth-child(1) { width:14px;height:14px; top:-10px; left:15%; animation-delay:0s; }
-    .sparkle:nth-child(2) { width:10px;height:10px; top:20%; right:-8px; animation-delay:.5s; }
-    .sparkle:nth-child(3) { width:12px;height:12px; bottom:-8px; right:20%; animation-delay:1s; }
-    .sparkle:nth-child(4) { width:8px;height:8px; bottom:30%; left:-6px; animation-delay:1.5s; background:var(--pink); }
+    /* Hide old hero image wrap since bg is now the image */
+    .hero-img-wrap { display: none; }
 
     @keyframes sparkle {
       0%,100% { transform: scale(1); opacity:.8; }
@@ -228,14 +230,14 @@
       cursor: pointer;
     }
     .pony-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 16px 40px rgba(244,114,182,.25); }
-    .pony-img-wrap {
+    .pony-img-wrap-card {
       position: relative; overflow: hidden;
       background: linear-gradient(135deg, #fce7f3, #ede9fe);
       padding: 1rem; height: 180px;
       display: flex; align-items: center; justify-content: center;
     }
-    .pony-img-wrap img { width: 100%; height: 100%; object-fit: contain; transition: transform .3s; }
-    .pony-card:hover .pony-img-wrap img { transform: scale(1.08); }
+    .pony-img-wrap-card img { width: 100%; height: 100%; object-fit: contain; transition: transform .3s; }
+    .pony-card:hover .pony-img-wrap-card img { transform: scale(1.08); }
 
     .pony-rarity {
       position: absolute; top: 8px; right: 8px;
@@ -314,9 +316,9 @@
     <span>🌈 PonyParadise</span>
   </div>
   <ul class="nav-links">
-    <li><a href="#">Products</a></li>
-    <li><a href="#">Cart 🛒</a></li>
-    <li><a href="#">Wishlist 💖</a></li>
+    <li><a href="index.html">Home Page</a></li>
+    <li><a href="cart.html">Cart 🛒</a></li>
+    <li><a href="wishlist.html">Wishlist 💖</a></li>
   </ul>
   <div class="nav-actions">
     <a href="login.html" class="btn btn-outline">Sign in</a>
@@ -332,24 +334,19 @@
     <div class="blob blob-3"></div>
   </div>
   <div class="hero-content">
-    <div class="hero-badge">✨ A Paradise for Pony Lovers ✨</div>
-    <img src="ponyregislogo.png" alt="PonyParadise" class="hero-logo"
+    <!-- <div class="hero-badge">✨ A Paradise for Pony Lovers ✨</div> -->
+    <img src="images/PonylogoRe2.png" alt="PonyParadise" class="hero-logo"
          onerror="this.style.display='none'; document.querySelector('.hero-title').style.display='block'"/>
-    <h1 class="hero-title" style="display:none; font-family:'Fredoka One',cursive; font-size:clamp(3rem,8vw,5rem); background:linear-gradient(90deg,var(--pink),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">PonyParadise</h1>
+    <h1 class="hero-title" style="display:none; font-family:'Fredoka One',cursive; font-size:clamp(3rem,8vw,5rem);
+     background:linear-gradient(90deg,var(--pink),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">PonyParadise</h1>
     <p class="hero-tagline">✦ A Paradise for Pony Lovers ✦</p>
     <div class="hero-cta">
-      <a href="shop.html" class="btn btn-primary">🛍 Shop Now</a>
+      <a href="shop.html" class="btn btn-primary">Shop Now</a>
       <a href="#featured" class="btn btn-outline">Explore Ponies ↓</a>
     </div>
   </div>
-  <div class="hero-img-wrap">
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <div class="sparkle"></div>
-    <img src="ponyhome.png.jpg" alt="Ponies"
-         onerror="this.src='https://placehold.co/680x380/fce7f3/c084fc?text=PonyParadise+🌈'"/>
-  </div>
+  <!-- hero-img-wrap hidden; background image is used instead -->
+  <div class="hero-img-wrap"></div>
 </section>
 
 <!-- WAVE -->
@@ -363,7 +360,7 @@
 <section class="section">
   <div class="section-title reveal">
     <h2>Why PonyParadise? 🌟</h2>
-    <p>Everything a pony lover needs in one magical place</p>
+    <p>Everything a pony lover needs in one magical place, Your lovely ponies await!</p>
   </div>
   <div class="features-grid">
     <div class="feature-card reveal">
@@ -405,7 +402,7 @@
 <div class="cta-section reveal">
   <h2>Ready to Start Your Pony Journey? 🌈</h2>
   <p>Join thousands of pony lovers — register today and get access to exclusive collections!</p>
-  <a href="register.html" class="btn btn-white">Create Your Account ✨</a>
+  <a href="register.html" class="btn btn-white">Create Your Account</a>
 </div>
 
 <!-- FOOTER -->
@@ -416,14 +413,14 @@
 <script>
   // Pony data (matches DB)
   const ponies = [
-    { name:'Princess Celestia', type:'Alicorn', rarity:'A', price:5999, img:'ponyceles.png' },
-    { name:'Princess Luna',     type:'Alicorn', rarity:'A', price:5999, img:'ponyluna.png' },
-    { name:'Applejack',         type:'Earth Pony', rarity:'B', price:1499, img:'ponyapplejack.png' },
-    { name:'Fluttershy',        type:'Pegasus', rarity:'B', price:1499, img:'ponyflutter.jpg' },
-    { name:'Rarity',            type:'Unicorn', rarity:'B', price:1499, img:'ponyrarity.png' },
-    { name:'Pinkie Pie',        type:'Earth Pony', rarity:'B', price:1499, img:'ponypinkypie.png' },
-    { name:'Twilight Sparkle',  type:'Alicorn', rarity:'A', price:1499, img:'ponytwi.webp' },
-    { name:'Rainbow Dash',      type:'Pegasus', rarity:'B', price:1499, img:'ponyRainbowDash.png' },
+    { name:'Princess Celestia', type:'Alicorn', rarity:'A', price:5999, img:'images/ponyceles.png',href:'shop.html?pony=celestia' },
+    { name:'Princess Luna',     type:'Alicorn', rarity:'A', price:5999, img:'images/ponyluna.png',href:'shop.html?pony=luna' },
+    { name:'Applejack',         type:'Earth Pony', rarity:'B', price:1499, img:'images/ponyapplejack.png',href:'shop.html?pony=applejack' },
+    { name:'Fluttershy',        type:'Pegasus', rarity:'B', price:1499, img:'images/ponyflutter.jpg',href:'shop.html?pony=fluttershy' },
+    { name:'Rarity',            type:'Unicorn', rarity:'B', price:1499, img:'images/ponyrarity.png',href:'shop.html?pony=rarity' },
+    { name:'Pinkie Pie',        type:'Earth Pony', rarity:'B', price:1499, img:'images/ponypinkypie.png',href:'shop.html?pony=pinkie' },
+    { name:'Twilight Sparkle',  type:'Alicorn', rarity:'A', price:1499, img:'images/ponytwi.webp',href:'shop.html?pony=twilight' },
+    { name:'Rainbow Dash',      type:'Pegasus', rarity:'B', price:1499, img:'images/ponyRainbowDash.png',href:'shop.html?pony=rainbow' },
   ];
 
   const rarityClass = { A:'rarity-a', B:'rarity-b', C:'rarity-c' };
@@ -433,21 +430,29 @@
   ponies.forEach((p, i) => {
     const card = document.createElement('div');
     card.className = 'pony-card reveal';
+    card.style.cursor = 'pointer';
     card.innerHTML = `
-      <div class="pony-img-wrap">
+      <div class="pony-img-wrap-card">
         <img src="${p.img}" alt="${p.name}"
              onerror="this.src='https://placehold.co/200x180/fce7f3/c084fc?text=🐴'"/>
         <span class="pony-rarity ${rarityClass[p.rarity]}">${p.rarity}</span>
-        <button class="wishlist-btn" data-i="${i}" title="Wishlist">🤍</button>
+      
       </div>
       <div class="pony-info">
         <h4>${p.name}</h4>
         <p class="pony-type">${p.type}</p>
         <div class="pony-bottom">
           <span class="pony-price">${p.price.toLocaleString()} ฿</span>
-          <button class="cart-btn" title="Add to cart">🛒</button>
+          
         </div>
       </div>`;
+    
+    card.addEventListener('click', (e) => {
+      if (!e.target.closest('.wishlist-btn') && !e.target.closest('.cart-btn')) {
+        window.location.href = p.href;
+      }
+    });
+    
     grid.appendChild(card);
   });
 
@@ -468,5 +473,6 @@
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
+<script src="js/navbar.js"></script>
 </body>
 </html>

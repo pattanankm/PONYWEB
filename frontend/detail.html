@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pony Detail - PonyParadise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:    #f472b6;
+      --pink-lt: #fce7f3;
+      --purple:  #c084fc;
+      --yellow:  #fde68a;
+      --sky:     #bae6fd;
+      --mint:    #bbf7d0;
+      --white:   #ffffff;
+      --dark:    #2d1b4e;
+      --radius:  1.2rem;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #fff0fb 0%, #f0f4ff 50%, #fffbe6 100%);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ─────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.8rem 2.5rem;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(14px);
+      border-bottom: 1.5px solid rgba(244,114,182,0.18);
+      box-shadow: 0 2px 24px rgba(192,132,252,0.08);
+    }
+
+    .nav-logo span {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-weight: 700; font-size: 0.95rem;
+      color: var(--dark); transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--pink); }
+
+    .nav-actions { display: flex; gap: 0.75rem; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1.3rem; border-radius: 50px; font-weight: 700;
+      font-family: 'Nunito', sans-serif; font-size: 0.9rem;
+      cursor: pointer; border: none; transition: transform .15s, box-shadow .15s;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,114,182,.3); }
+
+    .btn-outline {
+      background: transparent; border: 2px solid var(--pink); color: var(--pink);
+    }
+    .btn-outline:hover { background: var(--pink-lt); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: #fff;
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* ── MAIN CONTENT ───────────────────────── */
+    main {
+      padding-top: 80px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-bottom: 3rem;
+    }
+
+    .detail-container {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 2rem;
+      margin-bottom: 4rem;
+      background: linear-gradient(135deg, #bae6fd, #fffbe6);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 8px 24px rgba(192,132,252,.1);
+    }
+
+    .detail-image {
+      background: linear-gradient(135deg, #fce7f3, #ede9fe);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      box-shadow: 0 4px 16px rgba(192,132,252,.12);
+    }
+
+    .detail-image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .detail-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .detail-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-header-label {
+      font-size: 0.85rem;
+      color: #6b7280;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem;
+    }
+
+    .detail-header h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.8rem;
+      color: var(--dark);
+    }
+
+    .detail-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .price-label {
+      font-size: 0.85rem;
+      color: #6b7280;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .price-value {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.2rem;
+      color: var(--dark);
+      font-weight: 800;
+    }
+
+    .cart-action {
+      margin-bottom: 2rem;
+    }
+
+    .cart-action .btn-primary {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .details-section {
+      background: white;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(192,132,252,.08);
+      border: 1.5px solid rgba(244,114,182,.1);
+      margin-bottom: 2rem;
+    }
+
+    .details-section h3 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1rem;
+      color: var(--dark);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .details-section h3::after {
+      content: '▼';
+      font-size: 0.7rem;
+      transition: transform .2s;
+    }
+
+    .details-section h3.collapsed::after {
+      transform: rotate(-90deg);
+    }
+
+    .details-content {
+      color: #6b7280;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .details-content p {
+      margin: 0;
+    }
+
+    /* ── REVIEWS SECTION ────────────────────── */
+    .reviews-section {
+      margin-top: 3rem;
+    }
+
+    .reviews-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.2rem;
+      color: var(--dark);
+      margin-bottom: 2rem;
+      font-weight: 800;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .review-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      box-shadow: 0 2px 12px rgba(192,132,252,.1);
+      border: 1px solid rgba(244,114,182,.08);
+    }
+
+    .review-stars {
+      font-size: 0.9rem;
+      color: #d4af37;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.1rem;
+    }
+
+    .review-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--dark);
+      margin-bottom: 0.4rem;
+    }
+
+    .review-text {
+      color: #6b7280;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin-bottom: 0.8rem;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .review-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.65rem;
+    }
+
+    .review-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    /* ── FOOTER ─────────────────────────────── */
+    footer {
+      background: var(--dark); color: rgba(255,255,255,.7);
+      text-align: center; padding: 2rem;
+      font-size: .9rem;
+      margin-top: 3rem;
+    }
+    footer span { color: var(--pink); }
+
+    @media (max-width: 768px) {
+      .detail-container {
+        grid-template-columns: 1fr;
+      }
+      
+      main {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">
+    <span>🌈 PonyParadise</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home Page</a></li>
+    <li><a href="cart.html">Cart</a></li>
+    <li><a href="wishlist.html">Wishlist <3 </a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-outline">Sign in</a>
+    <a href="register.html" class="btn btn-primary">Register</a>
+  </div>
+</nav>
+
+
+<!-- MAIN CONTENT -->
+<main>
+  <div class="detail-container">
+    <!-- Left: Image -->
+    <div class="detail-image">
+      <img id="ponyImage" src="images/ponyceles.png" alt="Pony" onerror="this.src='https://placehold.co/300x300/fce7f3/c084fc?text=🐴'"/>
+    </div>
+
+    <!-- Right: Info -->
+    <div class="detail-info">
+      <div>
+        <div class="detail-header">
+          <div class="detail-header-label">Detail</div>
+          <h1 id="ponyName">Princess Celestia</h1>
+        </div>
+
+        <div class="detail-price">
+          <span class="price-label">Price</span>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 1.5rem;">
+          <span class="price-label">Baht</span>
+          <span class="price-value" id="ponyPrice">5999</span>
+        </div>
+
+        <div class="cart-action">
+          <button class="btn btn-primary">🛒 Add to cart</button>
+        </div>
+
+        <div class="details-section" style="margin-top: 1.5rem;">
+          <h3 id="detailsToggle">Details</h3>
+          <div class="details-content" id="detailsContent">
+            <p id="ponyDetailsText">Detail of pony and type</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="reviews-section">
+    <h2 class="reviews-title">Latest reviews</h2>
+    <div class="reviews-grid" id="reviewsGrid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-title">Review title</div>
+        <div class="review-text">Great product quality and fast shipping. Highly recommended!</div>
+        <div class="review-author">
+          <div class="review-avatar">👤</div>
+          <div class="review-name">Reviewer name</div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-title">Review title</div>
+        <div class="review-text">Amazing quality and beautiful design. Love it!</div>
+        <div class="review-author">
+          <div class="review-avatar">👤</div>
+          <div class="review-name">Reviewer name</div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-title">Review title</div>
+        <div class="review-text">Perfect gift for pony lovers. Excellent service!</div>
+        <div class="review-author">
+          <div class="review-avatar">👤</div>
+          <div class="review-name">Reviewer name</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<!-- Add Review Form -->
+<div style="margin-top:2rem; background:white; border-radius:1.2rem; padding:1.5rem; box-shadow:0 2px 12px rgba(192,132,252,.1);">
+  <h3 style="font-family:'Fredoka One'; margin-bottom:1rem;">Write a Review ✍️</h3>
+  <div style="margin-bottom:1rem;">
+    <label style="font-weight:700;">Rating</label>
+    <select id="ratingInput" style="width:100%; padding:8px; border:1.5px solid #e5e7eb; border-radius:8px; margin-top:4px;">
+      <option value="5">★★★★★</option>
+      <option value="4">★★★★☆</option>
+      <option value="3">★★★☆☆</option>
+      <option value="2">★★☆☆☆</option>
+      <option value="1">★☆☆☆☆</option>
+    </select>
+  </div>
+  <div style="margin-bottom:1rem;">
+  <label style="font-weight:700;">Comment</label>
+  <textarea id="commentInput" placeholder="Write your review..."
+    style="width:100%; padding:8px; border:1.5px solid #e5e7eb; border-radius:8px; margin-top:4px; height:80px; font-family:'Nunito'; resize:none;"></textarea>
+</div>
+  <button onclick="submitReview()" style="background:linear-gradient(135deg,#f472b6,#c084fc); color:white; border:none; padding:10px 20px; border-radius:50px; font-weight:700; cursor:pointer; width:100%;">
+    Submit Review 🌟
+  </button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Made with <span>💖</span> by Group 2 · PonyParadise © 2026</p>
+</footer>
+
+<script type="module" src="js/detail.js"></script>
+<script src="js/navbar.js"></script>
+</body>
+</html>
