@@ -53,22 +53,26 @@
       flex: 1; display: grid;
       grid-template-columns: 1fr 1fr;
       min-height: calc(100vh - 65px);
+      background-image: url('images/ponylogin.png');
+      background-size: cover;
+      background-position: center;
     }
 
     /* LEFT PANEL */
     .left-panel {
       position: relative; overflow: hidden;
-      background: linear-gradient(135deg, #fce7f3 0%, #ede9fe 60%, #e0f2fe 100%);
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       padding: 3rem 2rem; text-align: center;
+      background: rgba(237,233,254,0.45);
     }
-    .left-panel .blob {
+
+    .blob {
       position: absolute; border-radius: 50%; filter: blur(50px);
       animation: float 6s ease-in-out infinite;
     }
-    .left-panel .blob-1 { width:300px;height:300px; background:rgba(244,114,182,.25); top:-60px;left:-60px; }
-    .left-panel .blob-2 { width:250px;height:250px; background:rgba(192,132,252,.2); bottom:-40px;right:-40px; animation-delay:3s; }
+    .blob-1 { width:300px;height:300px; background:rgba(192,132,252,.25); top:-60px;right:-60px; }
+    .blob-2 { width:250px;height:250px; background:rgba(244,114,182,.2); bottom:-40px;left:-40px; animation-delay:3s; }
 
     @keyframes float {
       0%,100% { transform: translateY(0); }
@@ -76,14 +80,15 @@
     }
 
     .left-panel img {
-      width: min(300px, 80%);
-      filter: drop-shadow(0 12px 32px rgba(244,114,182,.3));
+      width: min(500px, 85%);
+      height: auto;
+      filter: drop-shadow(0 12px 32px rgba(192,132,252,.3));
       animation: float 5s ease-in-out infinite;
       position: relative; z-index: 1;
     }
     .left-panel h2 {
       font-family: 'Fredoka One', cursive; font-size: 1.8rem; margin-top: 1.5rem;
-      background: linear-gradient(90deg, var(--pink), var(--purple));
+      background: linear-gradient(90deg, var(--purple), var(--pink));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       position: relative; z-index: 1;
     }
@@ -92,8 +97,8 @@
     /* RIGHT PANEL – FORM */
     .right-panel {
       display: flex; align-items: center; justify-content: center;
-      padding: 3rem 2rem;
-      background: rgba(255,255,255,0.6); backdrop-filter: blur(8px);
+      padding: 2rem;
+      background: rgba(237,233,254,0.45);
     }
 
     .form-card {
@@ -101,7 +106,7 @@
       background: white; border-radius: 2rem;
       padding: 2.5rem 2rem;
       box-shadow: 0 8px 48px rgba(192,132,252,.15);
-      border: 1.5px solid rgba(244,114,182,.12);
+      border: 1.5px solid rgba(192,132,252,.15);
       animation: slideUp .5s ease both;
     }
     @keyframes slideUp {
@@ -115,7 +120,7 @@
     }
     .form-header h1 {
       font-family: 'Fredoka One', cursive; font-size: 1.8rem;
-      background: linear-gradient(90deg, var(--pink), var(--purple));
+      background: linear-gradient(90deg, var(--purple), var(--pink));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .form-header p { color: #9ca3af; font-size: .9rem; margin-top: .3rem; }
@@ -133,8 +138,8 @@
       outline: none;
     }
     .form-group input:focus {
-      border-color: var(--pink);
-      box-shadow: 0 0 0 3px rgba(244,114,182,.15);
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(192,132,252,.15);
     }
 
     .form-extras {
@@ -147,21 +152,21 @@
 
     .btn-submit {
       width: 100%; padding: .85rem; border-radius: 50px; border: none;
-      background: linear-gradient(135deg, var(--pink), var(--purple));
+      background: linear-gradient(135deg, var(--purple), var(--pink));
       color: white; font-family: 'Nunito', sans-serif; font-weight: 800;
       font-size: 1rem; cursor: pointer;
       transition: transform .15s, box-shadow .2s;
     }
-    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(244,114,182,.4); }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(192,132,252,.4); }
     .btn-submit:active { transform: scale(.98); }
 
     .form-footer { text-align: center; margin-top: 1.5rem; font-size: .88rem; color: #6b7280; }
     .form-footer a { color: var(--pink); font-weight: 700; text-decoration: none; }
     .form-footer a:hover { text-decoration: underline; }
 
-    .divider { display: flex; align-items: center; gap: .8rem; margin: 1.5rem 0; }
-    .divider::before, .divider::after { content:''; flex:1; height:1px; background:#e5e7eb; }
-    .divider span { font-size: .8rem; color: #9ca3af; font-weight: 600; white-space: nowrap; }
+    .divider { display: none; }
+    
+    .form-extras { display: none; }
 
     .alert { padding: .75rem 1rem; border-radius: var(--radius); font-size: .88rem; font-weight: 700; margin-bottom: 1rem; display: none; }
     .alert-error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
@@ -178,7 +183,7 @@
 <nav>
   <a href="index.html" class="nav-logo">🌈 PonyParadise</a>
   <ul class="nav-links">
-    <li><a href="shop.html">Shop!</a></li>
+    <li><a href="index.html">Home Page</a></li>
     <li><a href="cart.html">Cart 🛒</a></li>
     <li><a href="wishlist.html">Wishlist 💖</a></li>
   </ul>
@@ -193,9 +198,9 @@
   <div class="left-panel">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
-    <img src="ponylogin.png" alt="Pony"
-         onerror="this.src='https://placehold.co/300x280/fce7f3/c084fc?text=🌈'"/>
-    <h2>Welcome Back! 🌟</h2>
+    <img src="images/ponylogo-removebg.png"  alt="PonyParadise Logo"
+         onerror="this.src='https://placehold.co/300x280/ede9fe/c084fc?text=🌈'"/>
+    <h2>Welcome Back! ✨</h2>
     <p>Sign in to your PonyParadise account<br/>and continue your magical journey</p>
   </div>
 
@@ -220,14 +225,8 @@
           <label for="password">Password</label>
           <input type="password" id="password" placeholder="••••••••" required/>
         </div>
-        <div class="form-extras">
-          <label><input type="checkbox"/> Remember me</label>
-          <a href="#">Forgot your password?</a>
-        </div>
         <button type="submit" class="btn-submit" id="submitBtn">Sign In ✨</button>
       </form>
-
-      <div class="divider"><span>or</span></div>
 
       <div class="form-footer">
         Don't have an account? <a href="register.html">Register now →</a>
