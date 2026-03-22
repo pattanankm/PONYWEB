@@ -7,12 +7,13 @@ services:
     restart: always
     ports:
       - "3000:3000"
+    env_file: .env
     environment:
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_USERNAME: root
-      DB_PASSWORD: root
-      DB_NAME: pony_shop
+      DB_HOST: gateway01.ap-southeast-1.prod.aws.tidbcloud.com
+      DB_PORT: 4000
+      DB_USERNAME: E8oVMb53JmihxCk.ponyuser
+      DB_PASSWORD: pony12345
+      DB_NAME: test
     depends_on:
       - db
 
