@@ -51,16 +51,7 @@ const rarityClass = { A: 'rarity-a', B: 'rarity-b', C: 'rarity-c' };
 async function loadPonies(){
   try {
     console.log('Loading ponies from API...');
-    const response = await getPonies();
-    
-    // Ensure it's an array and handle errors
-    if (!Array.isArray(response)) {
-      console.error('Invalid response from API:', response);
-      document.getElementById("pony-list").innerHTML = '<p style="text-align:center; padding: 40px; color: #dc2626;">Error loading ponies: Invalid API response. Make sure the backend is running on port 3000.</p>';
-      return;
-    }
-    
-    const ponies = response;
+    const ponies = await getPonies();
     const user = JSON.parse(localStorage.getItem('customer') || '{}');
     
     // --- แก้ไขจุดนี้ ---
@@ -79,6 +70,14 @@ async function loadPonies(){
       document.getElementById("pony-list").innerHTML = '<p style="text-align:center; padding: 40px; color: #888;">No ponies available. Check if backend is running on port 3000.</p>';
       return;
     }
+
+    // Sort ponies by rarity: A, B, C
+    ponies.sort((a, b) => {
+      const rarityOrder = { 'A': 0, 'B': 1, 'C': 2 };
+      const rarityA = (ponyInfo[a.name]?.rarity || 'C');
+      const rarityB = (ponyInfo[b.name]?.rarity || 'C');
+      return rarityOrder[rarityA] - rarityOrder[rarityB];
+    });
 
     const list = document.getElementById("pony-list");
 
