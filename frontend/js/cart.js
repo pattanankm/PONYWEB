@@ -31,12 +31,13 @@ div.className = "cart-item";
 const itemInfo = document.createElement("div");
 itemInfo.className = "item-info";
 itemInfo.innerHTML = `
-<span>${item.name}</span>
+<span>${item.name} x${item.quantity}</span>
 `;
 
 const priceSpan = document.createElement("span");
 priceSpan.className = "price";
-priceSpan.innerText = `${Number(item.price).toLocaleString()} ฿`;
+const totalItemPrice = Number(item.price) * item.quantity;
+priceSpan.innerText = `${totalItemPrice.toLocaleString()} ฿`;
 
 const quantityControl = document.createElement("div");
 quantityControl.className = "quantity-control";
